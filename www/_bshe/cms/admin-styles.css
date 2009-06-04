@@ -1,0 +1,82 @@
+.LTsun table, tr, td {
+	 border-collapse: collapse;
+	 border: 0px;
+	 margin: 0px;
+	 padding: 0px;
+}
+
+.LTSunTextDefault {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #333;
+	line-height: 16px;
+}
+.LTSunTextConfirmHeader {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;
+	line-height: 22px;
+}
+.LTSunTextButton {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+	line-height: 24px;
+	text-decoration: none;
+}
+.LTSunTextControlDiv {
+	width: 120px;
+	height: 30px;
+	cursor: default;
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/drop-panel-bg.png');
+}
+.LTSunTextControlDiv[class] {
+	width: 120px;
+	height: 30px;
+	cursor: default;
+	background: transparent url(media/drop-panel-bg.png) no-repeat;
+}
+.LTSunTextControlDivPadding {
+	padding-top: 2px;
+	padding-left: 5px;
+}
+.LTSunTextControlDivPadding[class] {
+	padding-top: 2px;
+	padding-left: 5px;
+}
+
+.LTSunTextControlTable {
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+}
+
+.LTSunButtonStandard {
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+	margin-right: 1px;
+	margin-left: 1px;
+	cursor: pointer;
+}
+
+.LTsun div { background-color: transparent; }
+
+.LTSunPublishButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/publish.png', sizingMethod='crop'); }
+.LTSunPublishButton[class] { background: transparent url(media/publish.png) no-repeat; }
+
+.LTSunEditButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/edit.png', sizingMethod='crop'); }
+.LTSunEditButton[class] { background: transparent url(media/edit.png) no-repeat; }
+
+.LTSunRevisionsButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/revisions.png', sizingMethod='crop'); }
+.LTSunRevisionsButton[class] { background: transparent url(media/revisions.png) no-repeat; }
+
+.LTSunSaveButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/save.png', sizingMethod='crop'); }
+.LTSunSaveButton[class] { background: transparent url(media/save.png) no-repeat; }
+
+.LTSunLogoutButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/logout.png', sizingMethod='crop'); }
+.LTSunLogoutButton[class] { background: transparent url(media/logout.png) no-repeat; }

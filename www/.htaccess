@@ -1,0 +1,29 @@
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+)$ $1/index.html [N]
+
+#RewriteCond %{REQUEST_FILENAME} -d
+#RewriteRule ^$ _bshe/index.php [L]
+#RewriteRule ^/$ _bshe/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^_bshetemplate(.*)(\.gif|\.jpg|\.png|\.php|\.css|\.js|\.ico)$ - [L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^_bshetemplate(.*)$ _bshe/index.php [L]
+
+RewriteRule ^_bshetemplate(.*)\.html$ _bshe/index.php [L]
+RewriteRule ^_bshetemplate(.*)$ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^_bshe(.*)$ _bshe/index.php [L]
+
+RewriteRule ^_bshe(.*)\.html$ _bshe/index.php [L]
+
+RewriteRule ^_bshe(.*)$ - [L]
+
+RewriteRule ^(.*)$ _bshetemplate/$1 [N]

@@ -1,0 +1,190 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+</head>
+<body>
+HELLO WORLD<br />
+
+独自アサインクラステスト<br />
+ヘルパーなし<div key='bshe::myclass:mymethod:10000'></div><br />
+ヘルパーあり<div key='bshe:myclass:myclass:mymethod:10000'></div><br />
+
+ヘルパーテスト<br />
+そのまま<div key='bshe::d'></div><br />
+少数2桁四捨五入<div key='bshe:numberformat-2:d'></div><br />
+少数非表示<div key='bshe:numberformat:d'></div><br />
+
+
+attributeパーステスト：<input type= "button" name  = aaa value = 'aaa' aiueo selected/><br />
+Viewへassignした値の単純表示<div key="bshe::a"></div>
+Viewへassignした値の単純表示2<div key="bshe::a"></div>
+Inputタグへの単純表示<br />
+text:<input type="text" key="bshe::a" value="" /><br />
+password:<input type="password" key="bshe::a" value="" /><br />
+hidden:<input type="hidden" key="bshe::a" value="" /><br />
+submit:<input type="submit" key="bshe::a" value="" /><br />
+reset:<input type="reset" key="bshe::a" value="" /><br />
+button:<input type="button" key="bshe::a" value="" /><br />
+checkbox:<input type="checkbox" key="bshe::a" value="a text test" />a text test<br />
+checkbox2:<input type="checkbox" key="bshe::a" value="a text test2" />a text test2<br />
+radio:<input type="radio" key="bshe::a" value="a text test" />a text test<br />
+radio2:<input type="radio" key="bshe::a" value="a text test2" />a text test2<br />
+image:<input type="image" key="bshe::c" />a text test2<br />
+<br />
+属性指定更新
+<div key='bshe::b'>フォントカラー指定</div><br />
+
+属性削除
+<div key='bshe::e' aaa="aaa">aaa属性を削除する</div><br />
+
+プログラムからタグ削除(テンプレート上はdivタグが設置されている）
+<div key='bshe::f'>タグを削除する</div><br />
+テンプレート上指定タグ削除(テンプレート上はdivタグが設置されている）
+<div key='bshe::remove:'>タグを削除する</div><br /><br />
+
+単純テーブル
+<table key='bshe::table:table:tablevalues' border=1>
+    <tr key='bshe::table:row:tablevalues'>
+        <td key='bshe::table:col:tablevalues:cel1'>a</td>
+        <td key='bshe::table:col:tablevalues:cel2'>a</td>
+        <td key='bshe::table:col:tablevalues:cel3'>a</td>
+    </tr>
+</table>
+
+階層テーブル
+<table key='bshe::table:table:tablevalues2' border=1>
+    <tr key='bshe::table:row:tablevalues2'>
+        <td key='bshe::table:col:tablevalues2:cel1'>a</td>
+        <td>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table key='bshe::table:table:tablevalues4' border=1>
+    <tr key='bshe::table:row:tablevalues4'>
+        <td key='bshe::table:col:tablevalues4:cel1'>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+        <td key='bshe::table:col:tablevalues4:cel1'>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+マトリクステーブル
+<table key='bshe::xtable:table:tablevalues' border=1>
+    <tr key='bshe::xtable:row:tablevalues'>
+        <td key='bshe::xtable:col:tablevalues'><span key="bshe::xtable:val:tablevalues:cel1"></span><span key="bshe::xtable:val:tablevalues:cel2"></span><span key="bshe::xtable:val:tablevalues:cel3"></span></td>
+        <td key='bshe::xtable:col:tablevalues'><span key="bshe::xtable:val:tablevalues:cel1"></span><span key="bshe::xtable:val:tablevalues:cel2"></span><span key="bshe::xtable:val:tablevalues:cel3"></span></td>
+        <td key='bshe::xtable:col:tablevalues'><span key="bshe::xtable:val:tablevalues:cel1"></span><span key="bshe::xtable:val:tablevalues:cel2"></span><span key="bshe::xtable:val:tablevalues:cel3"></span></td>
+    </tr>
+</table>
+
+マトリクステーブル多重（マトリクスの中に通常テーブル）
+<table key='bshe::xtable:table:tablevalues3' border=1>
+    <tr key='bshe::xtable:row:tablevalues3'>
+        <td key='bshe::xtable:col:tablevalues3'>
+            <table key='bshe::table:subtable:cels' border=1>
+                <tr key='bshe::table:row:cels'>
+                    <td key='bshe::table:col:cels:cel1'>a</td>
+                    <td key='bshe::table:col:cels:cel2'>a</td>
+                    <td key='bshe::table:col:cels:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br />
+
+専用配列生成クラスを用いてのテーブル作成<br /><br />
+単純テーブル
+<table key='bshe::table:table:tablevalues_' border=1>
+    <tr key='bshe::table:row:tablevalues_'>
+        <td key='bshe::table:col:tablevalues_:cel1'>a</td>
+        <td key='bshe::table:col:tablevalues_:cel2'>a</td>
+        <td key='bshe::table:col:tablevalues_:cel3'>a</td>
+    </tr>
+</table>
+
+階層テーブル
+<table key='bshe::table:table:tablevalues2_' border=1>
+    <tr key='bshe::table:row:tablevalues2_'>
+        <td key='bshe::table:col:tablevalues2_:cel1'>a</td>
+        <td>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table key='bshe::table:table:tablevalues4_' border=1>
+    <tr key='bshe::table:row:tablevalues4_'>
+        <td key='bshe::table:col:tablevalues4_:cel1'>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+        <td key='bshe::table:col:tablevalues4_:cel2'>
+            <table key='bshe::table:subtable:sub1' border=1>
+                <tr key='bshe::table:row:sub1'>
+                    <td key='bshe::table:col:sub1:cel1'>a</td>
+                    <td key='bshe::table:col:sub1:cel2'>a</td>
+                    <td key='bshe::table:col:sub1:cel3'>a</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+マトリクステーブル
+<table key='bshe::xtable:table:tablevalues_' border=1>
+    <tr key='bshe::xtable:row:tablevalues_'>
+        <td key='bshe::xtable:col:tablevalues_'><span key="bshe::xtable:val:tablevalues_:cel1"></span><span key="bshe::xtable:val:tablevalues_:cel2"></span><span key="bshe::xtable:val:tablevalues_:cel3"></span></td>
+        <td key='bshe::xtable:col:tablevalues_'><span key="bshe::xtable:val:tablevalues_:cel1"></span><span key="bshe::xtable:val:tablevalues_:cel2"></span><span key="bshe::xtable:val:tablevalues_:cel3"></span></td>
+        <td key='bshe::xtable:col:tablevalues_'><span key="bshe::xtable:val:tablevalues_:cel1"></span><span key="bshe::xtable:val:tablevalues_:cel2"></span><span key="bshe::xtable:val:tablevalues_:cel3"></span></td>
+    </tr>
+</table>
+
+selectタグの処理<br />
+<select key="bshe::select:select:selecttbl">
+<option key="bshe::select:option:selecttbl"></option>
+</select><br /><br />
+selectタグ(optiongroupあり)の処理（この場合は通常のテーブルとして処理される）<br />
+<select key="bshe::select:select:selecttbl2">
+<optgroup key="bshe::select:optgroup:selecttbl2">
+<option key="bshe::select:option:selecttbl2"></option>
+</optgroup>
+</select><br />
+
+</body>
+
+</html>

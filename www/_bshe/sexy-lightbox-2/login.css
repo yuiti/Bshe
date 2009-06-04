@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+
+#bshelogin {
+width: 238px;
+margin: 0 auto;
+padding:20px 0 0 43px;
+background: url(sexyimages/user.png) no-repeat left center;
+}
+
+#bshelogin label {
+display:block;
+font-size:12px;
+padding-bottom:5px;
+text-align:right;
+}
+#bshelogin label em{
+width:80px;
+display:block;
+float:left;
+font-style: normal;
+}
+#bshelogin input {
+width:146px;
+height:22px;
+border:1px solid #ccc;
+}
+
+#bshelogin input.submit {
+width:auto;
+height:auto;
+border:1px solid #ccc;
+float:right;
+}

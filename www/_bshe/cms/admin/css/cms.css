@@ -1,0 +1,147 @@
+@CHARSET "UTF-8";
+
+/* 共通 */
+
+h2.BlockTitle {
+	font-size:120%;
+	background-color:#666666;
+	color:#FFFFFF;
+	line-height:1.5;
+	margin:0 0 5px;
+	padding:0 10px;
+	font-size:120%;
+}
+a:visited {
+	color:#6699CC;
+}
+
+.center {
+	text-align:center;
+}
+
+/* Header */
+
+div#hd {
+	background-color:#666666;
+	color:#FFFFFF;
+}
+
+div#hd #Logo {
+	float:left;
+	padding:4px;
+}
+
+div#hd #Sitename {
+	font-size:200%;
+	font-weight:bold;
+	line-height:100%;
+	padding:20px 0 10px 10px;
+}
+
+div#hd #Slogan {
+	padding:0 0 0 10px;
+	font-size:0.8em;
+}
+
+/* main column */
+div.CenterBlock {
+	padding:10px;
+    margin:0;
+    color: #000000;
+    font-size: 75%;
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", sans-serif;
+    background: #ffffff;
+}
+
+
+/* left column */
+div#LeftColumn {
+background-color:#EEEEEE;
+	}
+
+div#LeftColumn div.LeftBlock {
+	padding:10px 0;
+}
+
+div#LeftColumn .BlockContent {
+	text-align:center;
+}
+
+div#LeftColumn .BlockContent table {
+	margin:0;
+	padding:0;
+	width:100%;
+}
+
+div#LeftColumn .BlockContent table td {
+	padding:5px;
+	vertical-align:top;
+}
+
+
+
+/* menu */
+#mainmenu a.menuTop {
+	padding-left:3px;
+}
+
+#mainmenu a {
+	display:block;
+	margin:0;
+	padding:4px;
+	text-align:left;
+}
+#mainmenu a.menuMain {
+	padding-left:3px;
+}
+
+
+/* contents */
+.notesBox {
+	border: solid #996633 1px;
+	padding: 10px;
+    margin: 1px 1px 20px 1px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.fullBox {
+	width: 100%;
+}
+
+.fullBox table{
+	border: inset #996633 1px;
+
+}
+
+.fullBox th.fullBoxTitle {
+    background-color: #996633;
+    color: #FFFFFF;
+    padding: 3px;
+    margin: 1px;
+    text-align: center;
+}
+
+
+.fullBox th {
+	border: solid #FFFFFF 1px;
+    background-color: #FFCC99;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 1px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.fullBox td {
+    border: solid #FFCC99 1px;
+    padding: 2px;
+    margin: 1px;
+    text-align: left;
+    font-size: 11px;
+}
+
+.fullBox td.buttons {
+    text-align: center;
+}

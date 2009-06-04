@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bshe CMS エラーログ参照</title>
+<link rel="stylesheet" type="text/css" href="../../css/reset-fonts-grids.css"/>
+<link rel="stylesheet" type="text/css" href="css/cms.css"/>
+
+</head>
+<body>
+  <div id="doc4" class="yui-t1">
+    <div id="hd">
+        <div id="Logo"><a href="http://www.bshe.org"><img src="../../img/logo3.png" alt="Bshe Site" /></a></div>
+        <div id="Sitename">Bshe 管理画面：エラーログ参照</div>
+        <div id="Slogan">Smart HTML Extender</div>
+    </div>
+    <div id="bd">
+      <div id="yui-main">
+        <div class="yui-b">
+          <div class="CenterBlock">
+
+            <!--  説明 -->
+            <div class="notesBox">
+            この画面では、Bsheのテンプレート解析でのエラーを確認できます。<br />
+            ページが思ったように表示されない場合に、ここのログを確認し、<br />
+            HTMLの文法間違いやBsheで解析できないHTMLを修正してください。
+            </div>
+
+            <!-- フィルタ -->
+            <form name="form_filter" id="form_filter" onsubmit="return false;">
+            <table class="fullBox">
+              <tr>
+                <th colspan="4" class="fullBoxTitle">ログ検索</th>
+              </tr>
+              <tr>
+                <th>検索対象テンプレートファイル</th>
+                <td>
+                  <input type="text" id="target_files" name="target_files" key="bshe::target_files">
+                </td>
+              </tr>
+              <tr>
+                <th>対象期間</th>
+                <td>
+                  <input type="text" name="term_min" id="term_min" key="bshe:yahhocal:term_min" readonly=true>
+                  ～<input type="text" name="term_max" id="term_max" key="bshe:yahhocal:term_max" readonly=true>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <input type="button" value="検索実行" name="submit" id="submit" onclick="javascript:xajax_showList(xajax.getFormValues('form_filter'),'',1); return false;">
+                </td>
+              </tr>
+            </table>
+
+            <!-- 検索結果 -->
+            <div id="top_page_controller"><!-- ajaxで置換する --></div>
+            <table id="list_view" class="fullBox" key="bshe::table:table:errorlogs" style="display: none;">
+              <tr>
+                <th class="fullBoxTitle">日時</th>
+                <th class="fullBoxTitle">対象テンプレート</th>
+                <th class="fullBoxTitle">ログ内容</th>
+              </tr>
+              <tr key="bshe::table:row:errorlogs">
+                <td key="bshe::table:col:errorlogs:date"></td>
+                <td key="bshe::table:col:errorlogs:template"></td>
+                <td key="bshe::table:col:errorlogs:remarks" colspan="2"></td>
+              </tr>
+            </table>
+            <div id="bottom_page_controller"><!-- ajaxで置換する --></div>
+
+            <input type="hidden" key="bshe::page" name="page" id="page" value="1">
+            <input type="hidden" key="bshe::order" name="order" id="order" value="">
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="yui-b" id="LeftColumn">
+        <div class="LeftBlock">
+          <div class="BlockContent">
+            <table cellspacing="0">
+              <tr>
+                <td id="mainmenu">
+                  <a class="menuTop" href="./index.html?bshe_specializer_auth=logout">ログアウト</a>
+                  <a class="menuMain" key="bshe::cms:sitehome">サイトへ戻る</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="LeftBlock">
+          <h2 class="BlockTitle">メインメニュー</h2>
+          <div class="BlockContent">
+            <table cellspacing="0">
+              <tr>
+                <td id="mainmenu">
+                  <a class="menuTop" href="./index.html">ホーム</a>
+                  <a class="menuMain" href="link" key="bshe::cms:leftmenu">メニュー</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> <!-- body -->
+    <div id="ft"></div>
+  </div>
+
+</body>
+</html>
