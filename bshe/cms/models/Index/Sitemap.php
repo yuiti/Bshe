@@ -57,9 +57,9 @@ class Bshe_Cms_Models_Index_Sitemap extends Bshe_View_Plugin_Jquery_Treeview_Fil
 
             // arrayTreeへ、ファイル名、URLのAタグを表示
             if ((substr($file, -3) == 'htm') or (substr($file, -4) == 'html')) {
-                $this->_arrayTree[$file] = '<span class="file">' .
+                $this->_arrayTree[$file] = '<span class="file" id="target:' . str_replace('/', ':', $this->getParam('relative') . '/' . $file) . '">' .
                     '<a href="' . Bshe_Controller_Init::getUrlPath() .
-                    substr($this->getParam('path'), strlen($targetPath)) .
+                    $this->getParam('relative') .
                     '/' . $file . '">' .
                     $file . '</a></span>';
             }

@@ -45,7 +45,7 @@ class Bshecms_ErrorlogController extends Bshe_Specializer_Controller_Action_Bshe
             // ログインチェック
             if (!Bshe_Specializer_Acl::isAllowedByUserid($this->view->getEngine()->getTemplate()->getTemplateFileName(), null)) {
                 // ログインしていない
-                $this->_redirect(Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/login.html');
+                $this->_redirect(Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/login.html?bshe_specializer_auth=login');
             } else {
                 // ログイン中、LTsunをOFFにしてそのまま表示
                 $arrayPluginFlags = $this->view->getTemplatePluginFlags();

@@ -63,9 +63,19 @@ class Bshe_Cms_Models_Index_Contextmenu extends Bshe_View_Plugin_Jquery_Contextm
      *
      * @return unknown_type
      */
-    static public function goEdit()
+    static public function goEdit($target)
     {
+        try {
+            $response = new xajaxResponse();
 
+            $target = str_replace(':', '/', substr($target, strlen('target:')));
+
+            $response->redirect( Bshe_Controller_Init::getUrlPath() . $target );
+
+            return $response;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     /**
@@ -73,9 +83,52 @@ class Bshe_Cms_Models_Index_Contextmenu extends Bshe_View_Plugin_Jquery_Contextm
      *
      * @return unknown_type
      */
-    static public function doCopy()
+    static public function doCopy($arrayValues)
     {
+        try {
+            $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
 
+            $response = new xajaxResponse();
+
+            $filename = $arrayValues['filename'];
+            $target = str_replace(':', '/', substr($arrayValues['target'], strlen('target:')));
+
+            // コピー先ファイル名に「/」が含まれているかチェック
+            if(strpos($filename, '/') !== false) {
+                // 含まれている
+                $response->assign('bshecopyresult', 'innerHTML', 'ファイル名に「/」が含まれています。');
+                return $response;
+            }
+
+            // ファイルの存在の有無を確認
+            $filenameWithPath = Bshe_Controller_Init::getMainPath() . $config->alias_path . $config->template_path . dirname($target) . '/' . $filename;
+            if (file_exists($filenameWithPath)) {
+                // すでにファイルがある。
+                $response->assign('bshecopyresult', 'innerHTML', '指定のページはすでに存在しています。');
+                return $response;
+            }
+
+
+            $fromFile =  Bshe_Controller_Init::getMainPath() . $config->alias_path . $config->template_path . $target;
+
+            // HTMLテンプレートのみコピー
+            if (copy($fromFile, $filenameWithPath) === false) {
+                // エラー
+                Bshe_Log::logWithFileAndParamsWrite('ページのコピーに失敗しました。', Zend_Log::ERR, array('from' => $fromFile, 'to' => $filenameWithPath));
+                $response->assign('bshecopyresult', 'innerHTML', 'ページのコピーに失敗しました。');
+                return $response;
+            }
+            Bshe_Log::logWithFileAndParamsWrite('ページのコピー', Zend_Log::ERR, array('from' => $fromFile, 'to' => $filenameWithPath));
+
+            $response->assign('bshecopyresult', 'innerHTML', 'ページをコピーしました。');
+
+            $response->redirect( "./sitemap.html" );
+
+            return $response;
+
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     /**

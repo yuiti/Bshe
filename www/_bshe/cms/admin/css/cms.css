@@ -145,3 +145,41 @@ div#LeftColumn .BlockContent table td {
 .fullBox td.buttons {
     text-align: center;
 }
+
+
+/* sitemap copy */
+#bshelogin {
+width: 200px;
+margin: 0 auto;
+padding:20px 0 0 43px;
+background: url(images/page_white_copy.png) no-repeat left center;
+}
+
+#bshecopyform label {
+display:block;
+font-size:12px;
+padding-bottom:5px;
+text-align:left;
+}
+#bshecopyform label em{
+width:160px;
+display:block;
+float:left;
+font-style: normal;
+}
+#bshecopyform input {
+width:146px;
+height:22px;
+border:1px solid #ccc;
+}
+
+#bshecopyform input.submit {
+width:auto;
+height:auto;
+border:1px solid #ccc;
+float:right;
+}
+
+#bshecopyform #bshecopyresult {
+	color: red;
+}

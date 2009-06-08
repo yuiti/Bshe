@@ -43,7 +43,7 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             // ログインチェック
             if (!Bshe_Specializer_Acl::isAllowedByUserid($this->view->getEngine()->getTemplate()->getTemplateFileName(), null)) {
                 // ログインしていない
-                $this->_redirect(Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/login.html');
+                $this->_redirect(Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/login.html?bshe_specializer_auth=login');
             } else {
                 // ログイン中、LTsunをOFFにしてそのまま表示
                 $arrayPluginFlags = $this->view->getTemplatePluginFlags();
@@ -88,7 +88,7 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             // treeview関連
             $arrayPluginFlags = Bshe_Cms_Models_Index_Sitemap::setJavascript($arrayPluginFlags);
             // sitemapクラスインスタンス化
-            $siteMap = New Bshe_Cms_Models_Index_Sitemap(array('path' => $targetPath, 'self' => 'ホーム'));
+            $siteMap = New Bshe_Cms_Models_Index_Sitemap(array('path' => $targetPath, 'self' => 'ホーム', 'relative' => ''));
             $this->view->sitemap = $siteMap->getHtml();
 
             // contextMenu関連生成
@@ -101,11 +101,11 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'goEdit'
             );
-/*            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doCopy'
             );
-            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+/*            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doDelete'
             );
@@ -118,6 +118,20 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             $this->view->setTemplatePluginFlags($arrayPluginFlags);
 
 
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * コピーアクション用画面
+     *
+     * @return unknown_type
+     */
+    public function copyAction()
+    {
+        try {
+            $this->view->targetfile = urldecode($_REQUEST['target']);
         } catch (Exception $e) {
             throw $e;
         }

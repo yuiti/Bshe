@@ -42,6 +42,7 @@ class Bshe_View_Plugin_Jquery_Treeview_Filetree extends Bshe_View_Plugin_Jquery_
         try {
             // パラメーター項目設定
             $this->_params['path'] = '';
+            $this->_params['relative'] = '';
 
             parent::__construct($params);
 
@@ -75,7 +76,8 @@ class Bshe_View_Plugin_Jquery_Treeview_Filetree extends Bshe_View_Plugin_Jquery_
                         $className = get_class($this);
                         $this->_arrayTree[$file] = New $className(array(
                                 'path' => $this->getParam('path') . '/' . $file,
-                                'self' => $this->getParentString($file)
+                                'self' => $this->getParentString($file),
+                                'relative' => $this->getParam('relative') . '/' . $file
                             )
                         );
                     } else {
