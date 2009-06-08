@@ -76,6 +76,10 @@ class Bshe_View_Plugin_Jquery extends Bshe_View_Plugin_Abstract
                     }
                 }
             }
+            // 共存
+            $strTmp = '<script type="text/javascript">jQuery.noConflict();</script>';
+                        $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
+
 
             foreach ($insertNodeClasses as $key => $node) {
                 $template->addChild($node, $headerElement);

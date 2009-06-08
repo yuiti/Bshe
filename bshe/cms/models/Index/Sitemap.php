@@ -56,12 +56,13 @@ class Bshe_Cms_Models_Index_Sitemap extends Bshe_View_Plugin_Jquery_Treeview_Fil
             $targetPath = Bshe_Controller_Init::getMainPath() . $config->alias_path . $config->template_path;
 
             // arrayTreeへ、ファイル名、URLのAタグを表示
-            $this->_arrayTree[$file] = '<span class="file">' .
-                '<a href="' . Bshe_Controller_Init::getUrlPath() .
+            if ((substr($file, -3) == 'htm') or (substr($file, -4) == 'html')) {
+                $this->_arrayTree[$file] = '<span class="file">' .
+                    '<a href="' . Bshe_Controller_Init::getUrlPath() .
                     substr($this->getParam('path'), strlen($targetPath)) .
                     '/' . $file . '">' .
-
-                $file . '</span>';
+                    $file . '</a></span>';
+            }
         } catch (Exception $e) {
             throw $e;
         }

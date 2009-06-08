@@ -81,6 +81,8 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             $targetPath = Bshe_Controller_Init::getMainPath() . $config->alias_path . $config->template_path;
             $arrayPluginFlags = $this->view->getTemplatePluginFlags();
 
+            $arrayPluginFlags['Bshe_View_Plugin_Sexylightbox']['setLightboxJs'] = true;
+
             $arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'][] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/admin/js/sitemap.js';
 
             // treeview関連
@@ -93,13 +95,13 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             $arrayPluginFlags = Bshe_View_Plugin_Jquery_Contextmenu_Default::setJavascript($arrayPluginFlags);
 
             $contextmenu = New Bshe_Cms_Models_Index_Contextmenu();
-/*
+
             // menuの各項目用のxajaxのメソッド生成
             $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'goEdit'
             );
-            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+/*            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doCopy'
             );

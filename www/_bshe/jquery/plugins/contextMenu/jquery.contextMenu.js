@@ -15,8 +15,8 @@
 // For details, visit http://creativecommons.org/licenses/by/3.0/us/
 //
 if(jQuery)( function() {
-	$.extend($.fn, {
-		
+	jQuery.extend(jQuery.fn, {
+
 		contextMenu: function(o, callback) {
 			// Defaults
 			if( o.menu == undefined ) return false;
@@ -26,25 +26,25 @@ if(jQuery)( function() {
 			if( o.inSpeed == 0 ) o.inSpeed = -1;
 			if( o.outSpeed == 0 ) o.outSpeed = -1;
 			// Loop each context menu
-			$(this).each( function() {
-				var el = $(this);
-				var offset = $(el).offset();
+			jQuery(this).each( function() {
+				var el = jQuery(this);
+				var offset = jQuery(el).offset();
 				// Add contextMenu class
-				$('#' + o.menu).addClass('contextMenu');
+				jQuery('#' + o.menu).addClass('contextMenu');
 				// Simulate a true right click
-				$(this).mousedown( function(e) {
+				jQuery(this).mousedown( function(e) {
 					var evt = e;
-					$(this).mouseup( function(e) {
-						var srcElement = $(this);
-						$(this).unbind('mouseup');
+					jQuery(this).mouseup( function(e) {
+						var srcElement = jQuery(this);
+						jQuery(this).unbind('mouseup');
 						if( evt.button == 2 ) {
 							// Hide context menus that may be showing
-							$(".contextMenu").hide();
+							jQuery(".contextMenu").hide();
 							// Get this context menu
-							var menu = $('#' + o.menu);
-							
-							if( $(el).hasClass('disabled') ) return false;
-							
+							var menu = jQuery('#' + o.menu);
+
+							if( jQuery(el).hasClass('disabled') ) return false;
+
 							// Detect mouse position
 							var d = {}, x, y;
 							if( self.innerHeight ) {
@@ -66,146 +66,146 @@ if(jQuery)( function() {
 							}
 							(e.pageX) ? x = e.pageX : x = e.clientX + d.scrollLeft;
 							(e.pageY) ? y = e.pageY : x = e.clientY + d.scrollTop;
-							
+
 							// Show the menu
-							$(document).unbind('click');
-							$(menu).css({ top: y, left: x }).fadeIn(o.inSpeed);
+							jQuery(document).unbind('click');
+							jQuery(menu).css({ top: y, left: x }).fadeIn(o.inSpeed);
 							// Hover events
-							$(menu).find('A').mouseover( function() {
-								$(menu).find('LI.hover').removeClass('hover');
-								$(this).parent().addClass('hover');
+							jQuery(menu).find('A').mouseover( function() {
+								jQuery(menu).find('LI.hover').removeClass('hover');
+								jQuery(this).parent().addClass('hover');
 							}).mouseout( function() {
-								$(menu).find('LI.hover').removeClass('hover');
+								jQuery(menu).find('LI.hover').removeClass('hover');
 							});
-							
+
 							// Keyboard
-							$(document).keypress( function(e) {
+							jQuery(document).keypress( function(e) {
 								switch( e.keyCode ) {
 									case 38: // up
-										if( $(menu).find('LI.hover').size() == 0 ) {
-											$(menu).find('LI:last').addClass('hover');
+										if( jQuery(menu).find('LI.hover').size() == 0 ) {
+											jQuery(menu).find('LI:last').addClass('hover');
 										} else {
-											$(menu).find('LI.hover').removeClass('hover').prevAll('LI:not(.disabled)').eq(0).addClass('hover');
-											if( $(menu).find('LI.hover').size() == 0 ) $(menu).find('LI:last').addClass('hover');
+											jQuery(menu).find('LI.hover').removeClass('hover').prevAll('LI:not(.disabled)').eq(0).addClass('hover');
+											if( jQuery(menu).find('LI.hover').size() == 0 ) jQuery(menu).find('LI:last').addClass('hover');
 										}
 									break;
 									case 40: // down
-										if( $(menu).find('LI.hover').size() == 0 ) {
-											$(menu).find('LI:first').addClass('hover');
+										if( jQuery(menu).find('LI.hover').size() == 0 ) {
+											jQuery(menu).find('LI:first').addClass('hover');
 										} else {
-											$(menu).find('LI.hover').removeClass('hover').nextAll('LI:not(.disabled)').eq(0).addClass('hover');
-											if( $(menu).find('LI.hover').size() == 0 ) $(menu).find('LI:first').addClass('hover');
+											jQuery(menu).find('LI.hover').removeClass('hover').nextAll('LI:not(.disabled)').eq(0).addClass('hover');
+											if( jQuery(menu).find('LI.hover').size() == 0 ) jQuery(menu).find('LI:first').addClass('hover');
 										}
 									break;
 									case 13: // enter
-										$(menu).find('LI.hover A').trigger('click');
+										jQuery(menu).find('LI.hover A').trigger('click');
 									break;
 									case 27: // esc
-										$(document).trigger('click');
+										jQuery(document).trigger('click');
 									break
 								}
 							});
-							
+
 							// When items are selected
-							$('#' + o.menu).find('A').unbind('click');
-							$('#' + o.menu).find('LI:not(.disabled) A').click( function() {
-								$(document).unbind('click').unbind('keypress');
-								$(".contextMenu").hide();
+							jQuery('#' + o.menu).find('A').unbind('click');
+							jQuery('#' + o.menu).find('LI:not(.disabled) A').click( function() {
+								jQuery(document).unbind('click').unbind('keypress');
+								jQuery(".contextMenu").hide();
 								// Callback
-								if( callback ) callback( $(this).attr('href').substr(1), $(srcElement), {x: x - offset.left, y: y - offset.top, docX: x, docY: y} );
+								if( callback ) callback( jQuery(this).attr('href').substr(1), jQuery(srcElement), {x: x - offset.left, y: y - offset.top, docX: x, docY: y} );
 								return false;
 							});
-							
+
 							// Hide bindings
 							setTimeout( function() { // Delay for Mozilla
-								$(document).click( function() {
-									$(document).unbind('click').unbind('keypress');
-									$(menu).fadeOut(o.outSpeed);
+								jQuery(document).click( function() {
+									jQuery(document).unbind('click').unbind('keypress');
+									jQuery(menu).fadeOut(o.outSpeed);
 									return false;
 								});
 							}, 0);
 						}
 					});
 				});
-				
+
 				// Disable text selection
-				if( $.browser.mozilla ) {
-					$('#' + o.menu).each( function() { $(this).css({ 'MozUserSelect' : 'none' }); });
-				} else if( $.browser.msie ) {
-					$('#' + o.menu).each( function() { $(this).bind('selectstart.disableTextSelect', function() { return false; }); });
+				if( jQuery.browser.mozilla ) {
+					jQuery('#' + o.menu).each( function() { jQuery(this).css({ 'MozUserSelect' : 'none' }); });
+				} else if( jQuery.browser.msie ) {
+					jQuery('#' + o.menu).each( function() { jQuery(this).bind('selectstart.disableTextSelect', function() { return false; }); });
 				} else {
-					$('#' + o.menu).each(function() { $(this).bind('mousedown.disableTextSelect', function() { return false; }); });
+					jQuery('#' + o.menu).each(function() { jQuery(this).bind('mousedown.disableTextSelect', function() { return false; }); });
 				}
 				// Disable browser context menu (requires both selectors to work in IE/Safari + FF/Chrome)
-				$(el).add('UL.contextMenu').bind('contextmenu', function() { return false; });
-				
+				jQuery(el).add('UL.contextMenu').bind('contextmenu', function() { return false; });
+
 			});
-			return $(this);
+			return jQuery(this);
 		},
-		
+
 		// Disable context menu items on the fly
 		disableContextMenuItems: function(o) {
 			if( o == undefined ) {
 				// Disable all
-				$(this).find('LI').addClass('disabled');
-				return( $(this) );
+				jQuery(this).find('LI').addClass('disabled');
+				return( jQuery(this) );
 			}
-			$(this).each( function() {
+			jQuery(this).each( function() {
 				if( o != undefined ) {
 					var d = o.split(',');
 					for( var i = 0; i < d.length; i++ ) {
-						$(this).find('A[href="' + d[i] + '"]').parent().addClass('disabled');
-						
+						jQuery(this).find('A[href="' + d[i] + '"]').parent().addClass('disabled');
+
 					}
 				}
 			});
-			return( $(this) );
+			return( jQuery(this) );
 		},
-		
+
 		// Enable context menu items on the fly
 		enableContextMenuItems: function(o) {
 			if( o == undefined ) {
 				// Enable all
-				$(this).find('LI.disabled').removeClass('disabled');
-				return( $(this) );
+				jQuery(this).find('LI.disabled').removeClass('disabled');
+				return( jQuery(this) );
 			}
-			$(this).each( function() {
+			jQuery(this).each( function() {
 				if( o != undefined ) {
 					var d = o.split(',');
 					for( var i = 0; i < d.length; i++ ) {
-						$(this).find('A[href="' + d[i] + '"]').parent().removeClass('disabled');
-						
+						jQuery(this).find('A[href="' + d[i] + '"]').parent().removeClass('disabled');
+
 					}
 				}
 			});
-			return( $(this) );
+			return( jQuery(this) );
 		},
-		
+
 		// Disable context menu(s)
 		disableContextMenu: function() {
-			$(this).each( function() {
-				$(this).addClass('disabled');
+			jQuery(this).each( function() {
+				jQuery(this).addClass('disabled');
 			});
-			return( $(this) );
+			return( jQuery(this) );
 		},
-		
+
 		// Enable context menu(s)
 		enableContextMenu: function() {
-			$(this).each( function() {
-				$(this).removeClass('disabled');
+			jQuery(this).each( function() {
+				jQuery(this).removeClass('disabled');
 			});
-			return( $(this) );
+			return( jQuery(this) );
 		},
-		
+
 		// Destroy context menu(s)
 		destroyContextMenu: function() {
 			// Destroy specified context menus
-			$(this).each( function() {
+			jQuery(this).each( function() {
 				// Disable action
-				$(this).unbind('mousedown').unbind('mouseup');
+				jQuery(this).unbind('mousedown').unbind('mouseup');
 			});
-			return( $(this) );
+			return( jQuery(this) );
 		}
-		
+
 	});
 })(jQuery);

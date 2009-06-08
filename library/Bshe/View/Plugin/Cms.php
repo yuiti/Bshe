@@ -253,7 +253,7 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             $template->addChild($node, $headerElement);
 
             $strTmp = "<script type=\"text/javascript\">" .
-                "function bshecmsauth(e){" .
+                "function bshecmsauth(){" .
                 "e=new SexyLightBox({find:'sexywhite',color:'white', OverlayStyles:{'background-color':'#000'}, imagesdir:'" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "/sexy-lightbox-2/sexyimages'});" .
                 "e.show('login', '" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "/sexy-lightbox-2/login.html?height=160&width=350', 'sexylightbox');};window.onload=bshecmsauth</script>";
             $node = New Bshe_Dom_Node_Element($strTmp, 'script');
