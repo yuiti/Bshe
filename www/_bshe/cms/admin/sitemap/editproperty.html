@@ -1,3 +1,15 @@
-<div id="bshelogin">
-  editproperty
+<div id="bsheeditproperty">
+  <form id="bsheeditpropertyform" name="bsheeditpropertyform" onsubmit="javascript:return false;">
+  <br />
+
+  <div>
+  <label><img src="images/page_white_edit.png">ページのタイトルなどを変更します</label><br /><br />
+  <label><em>タイトル：</em><input type="text" id="title" name="title" key="bshe::title" /></label><br />
+  <label><em>説明：</em><textarea id="desc" name="desc" key="bshe::desc" ></textarea></label><br />
+  <label><em>キーワード</em><textarea id="keywords" name="keywords" key="bshe::keywords" ></textarea></label><br />
+  <label><span id="bsheeditpropertyresult"></span></label><br />
+  <input type="button" class="submit" value="変更" onclick="javascript:xajax_doEditProperty(xajax.getFormValues('bsheeditpropertyform')); return false;" />
+  <input type="hidden" name="target" id="target" key="bshe::targetfile">
+  </div>
+  </form>
 </div>

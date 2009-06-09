@@ -109,11 +109,12 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doDelete'
             );
+ */
             $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doEditProperty'
             );
- */            // domreadyの内容生成
+            // domreadyの内容生成
 
             $this->view->setTemplatePluginFlags($arrayPluginFlags);
 
@@ -132,6 +133,41 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
     {
         try {
             $this->view->targetfile = urldecode($_REQUEST['target']);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * プロパティ編集画面
+     *
+     * @return unknown_type
+     */
+    public function editpropertyAction()
+    {
+        try {
+            $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
+
+            $this->view->targetfile = urldecode($_REQUEST['target']);
+
+            $mainPath = Bshe_Controller_Init::getMainPath();
+
+            // 対象ファイルのテンプレートクラスを生成
+            $params['templatePath'] = $mainPath . $config->alias_path . $config->template_path;
+            $params['templateFile'] = str_replace(':', '/', substr($_REQUEST['target'], strlen('target:')));
+            $view = New Bshe_View($params);
+            $template = $view->getEngine()->getTemplate();
+
+            // 対象ファイルのキャッシュクラス生成
+            $titleCache = New Bshe_Specializer_Cms_Cache_Title($template);
+
+            // タイトル情報取得
+            $arrayTitles = $titleCache->getArrayContents();
+
+            $this->view->desc = $arrayTitles['desc'];
+            $this->view->keywords = $arrayTitles['keywords'];
+            $this->view->title = $arrayTitles['title'];
+
         } catch (Exception $e) {
             throw $e;
         }

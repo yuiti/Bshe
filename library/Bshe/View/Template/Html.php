@@ -1148,7 +1148,38 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
             }
             if ($targetElement === null) {
                 // headerが見つからない
-                $template->getLogger()->logWithFileAndParams($tagName . 'タグが見つかりません。', Zend_Log::INFO);
+                $this->getLogger()->logWithFileAndParams($tagName . 'タグが見つかりません。', Zend_Log::INFO);
+                return false;
+            } else {
+                return $targetElement;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * タグ名からElementを取得
+     * 同じタグが複数ある場合は最初に見つかったタグを返す
+     *
+     * @param $tagName
+     * @return unknown_type
+     */
+    public function getElementsByName($tagName)
+    {
+        try {
+            $elements = $this->getElementNumbers();
+            $targetElement = array();
+            foreach ($elements as $key => $element) {
+                $nodeName = $element->nodeName;
+                if ($nodeName == $tagName) {
+                    // header発見
+                    $targetElement[] = $key;
+                }
+            }
+            if ($targetElement == array()) {
+                // headerが見つからない
+                $this->getLogger()->logWithFileAndParams($tagName . 'タグが見つかりません。', Zend_Log::INFO);
                 return false;
             } else {
                 return $targetElement;

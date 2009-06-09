@@ -80,9 +80,9 @@ class Bshe_Specializer_Cms_Cache_Text extends Bshe_Specializer_Cms_Cache_Abstrac
         try {
             $this->_contents = $contents;
             $this->_saveCmsCache($this->_cachePath . '/' . date('Y-m-d-H-i-s') . '.html', $this->_contents);
-            echo true;
+            return true;
         } catch (Exception $e) {
-            echo 0;
+            throw $e;
         }
     }
 
@@ -98,9 +98,9 @@ class Bshe_Specializer_Cms_Cache_Text extends Bshe_Specializer_Cms_Cache_Abstrac
         try {
             $this->_contents = $contents;
             $this->_saveCmsCache($this->_cachePath . '/published.html', $this->_contents);
-            echo true;
+            return true;
         } catch (Exception $e) {
-            echo 0;
+            throw $e;
         }
     }
 

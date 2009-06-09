@@ -217,10 +217,10 @@ abstract class Bshe_Dom_Node_Abstract
             // "内の「 」「=」対策
 
             while (mb_strlen($strInnerTag) != 0) {
-                if (preg_match('/^([^\=]+)\s*=\s*\"+([^\"]*)\"+/', $strInnerTag, $matches) == 1) {
+                if (preg_match('/^([^\=]+)\s*=\s*\"([^\"]*)\"+/', $strInnerTag, $matches) == 1) {
                     // ""で囲まれたタイプ
                     $this->_attributes[$matches[1]] = $matches[2];
-                } elseif (preg_match('/^([^\=]+)\s*=\s*\'+(.*)\'+/', $strInnerTag, $matches) == 1) {
+                } elseif (preg_match('/^([^\=]+)\s*=\s*\'([^\']*)\'+/', $strInnerTag, $matches) == 1) {
                     // ''で囲まれたタイプ
                     $this->_attributes[$matches[1]] = $matches[2];
                 } elseif (preg_match('/^([^\=]+)\s*=\s*([^\s]*)/', $strInnerTag, $matches) == 1) {

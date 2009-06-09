@@ -30,6 +30,122 @@ require_once "Bshe/Controller/Init.php";
 class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
 {
     /**
+     * templateクラスへコンテキストメニューのCms用の各種処理を実装する。
+     *
+     * @param $template
+     * @return unknown_type
+     */
+    static public function setCms2($template)
+    {
+        try {
+            // 言語ファイル読込
+            $configLanguage = Bshe_Registry_Config::getConfig('Bshe_Language');
+
+            // Cmsログインしていない場合何もせず終了
+            if (!Bshe_Specializer_Acl::isAllowedByUserid($template->getTemplateFileName(), null)) {
+                return $template;
+            }
+
+            $arrayPluginFlags = $template->getParam('pluginFlags');
+            if ($arrayPluginFlags['Bshe_View_Plugin_Cms'] === false) {
+                // フラグがないため何もしない
+                return $template;
+            }
+
+            $headerElement = $template->getElementByName('head');
+            $bodyElement = $template->getElementByName('body');
+
+            if ($headerElement === null) {
+                // headerが見つからない
+                $template->getLogger()->logWithFileAndParams($configLanguage->Bshe_View_Plugin_Cms->cant_find_head, Zend_Log::INFO);
+                return $template;
+            }
+            if ($bodyElement === null) {
+                // headerが見つからない
+                $template->getLogger()->logWithFileAndParams($configLanguage->Bshe_View_Plugin_Cms->cant_find_body, Zend_Log::INFO);
+                return $template;
+            }
+
+
+            // コンテンツ情報
+            $encodedTemplateName = urlencode($template->getTemplateFileName());
+
+            // headerへ必要なlinkを挿入
+            $insertNodeClasses = array();
+            $strTmp =
+                '<script type="text/javascript" language="javascript">' .
+                "var LTSunSettings = new Array();" .
+                "LTSunSettings['selectTextElementEditable'] = new Array();";
+            // 編集対象定義
+            foreach ($arrayPluginFlags['Bshe_View_Plugin_Cms']['selectTextElementEditable'] as $key => $targetId) {
+                $strTmp .= "LTSunSettings['selectTextElementEditable'].push(\"".$targetId."\");";
+            }
+            // 画像定義
+            $strTmp .=
+            	"LTSunSettings['selectImageElement'] = new Array();";
+            // テキストコントロールパネル文字列
+            $strTmp .=
+                "LTSunSettings['titleTextControls_save'] = '" . $configLanguage->Bshe_View_Plugin_Cms->titleTextControls_save . "';" .
+                "LTSunSettings['titleTextControls_publish'] = '" . $configLanguage->Bshe_View_Plugin_Cms->titleTextControls_publish . "';" .
+                "LTSunSettings['titleTextControls_edit'] = '" . $configLanguage->Bshe_View_Plugin_Cms->titleTextControls_edit . "';" .
+                "LTSunSettings['titleTextControls_revisions'] = '" . $configLanguage->Bshe_View_Plugin_Cms->titleTextControls_revisions . "';" .
+                "LTSunSettings['titleTextControls_menu'] = '" . $configLanguage->Bshe_View_Plugin_Cms->titleTextControls_menu . "';" .
+            "</script>\n";
+            // css
+            $strTmp .=
+                "<link rel='stylesheet' href='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
+                    "/cms/admin-styles.css' type='text/css' media='screen' />\n"
+            ;
+            $insertNodeClasses[] = New Bshe_Dom_Node_Text($strTmp);
+
+            foreach ($insertNodeClasses as $key => $node) {
+                $template->addChild($node, $headerElement);
+            }
+
+
+            // bodyの後ろに
+           $insertNodeClasses = array();
+            $strTmp =
+            	"<script type='text/javascript' language='javascript'>\n" .
+                    "LTSunSettings['bshe_indexphp_path']='" .
+                    Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "/cms';\n" .
+                    "LTSunSettings['bshe_templatename']='" . $encodedTemplateName . "'</script>\n" .
+            "<script type='text/javascript' language='javascript' src='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
+                    "/prototype/prototype.js'></script>\n" .
+                "<script type='text/javascript' language='javascript' src='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
+                    "/cms/effects.js'></script>\n" .
+                "<script type='text/javascript' language='javascript' src='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
+                    "/cms/ltsun-engine.js'></script>\n" .
+                "<script type='text/javascript' language='javascript' src='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
+                    "/cms/admin.js'></script>\n"
+                ;
+            $insertNodeClasses[] = New Bshe_Dom_Node_Text($strTmp);
+
+            foreach ($insertNodeClasses as $key => $node) {
+                $template->addChild($node, $bodyElement);
+            }
+
+
+            // HTML上のスタイル関連タグ取得
+
+//            $cache = New Bshe_Specializer_Cms_Cache_Css($template);
+//            $cache->saveCmsCache($strStyle);
+
+            // sexylightbox二重読み込み抑止
+            // テンプレートへpluginFlagをセット
+            $arrayPluginFlags = $template->getParam('pluginFlags');
+            // sexylightbox
+            $arrayPluginFlags['Bshe_View_Plugin_Sexylightbox']['setLightboxJs'] = true;
+            $template->setParam('pluginFlags', $arrayPluginFlags);
+
+            return $template;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+
+    /**
      * templateクラスへCms用の各種処理を実装する。
      *
      * @param $template
@@ -267,4 +383,62 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
     }
 
 
+    /**
+     * キャッシュを利用してタイトルやdescription、keywordsなどを変更する
+     *
+     * @param $template
+     * @return unknown_type
+     */
+    static public function updateHead($template)
+    {
+        try {
+            $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
+
+            // titleキャッシュクラスインスタンス化
+            $titleCache = New Bshe_Specializer_Cms_Cache_Title($template);
+            $arrayTitles = $titleCache->getArrayContents();
+
+            // headerエレメント取得
+            if (($headerElement = $template->getElementByName('head')) === false) {
+                return $template;
+            }
+
+            // title,metaエレメント取得
+            $arrayTags = $titleCache->getTagNumbers($template);
+
+            if ($arrayTags['title'] === false) {
+                // headへ追加
+                $strTmp = "<title>" . $arrayTitles['title'] . '</title>';
+                $node = New Bshe_Dom_Node_Element($strTmp, 'title');
+                $template->addChild($node, $headerElement);
+            } else {
+                // 上書き
+                $template->setAttribute($arrayTags['title'], 'innerHTML', $arrayTitles['title']);
+            }
+
+            if ($arrayTags['description'] === false) {
+                // headへ追加
+                $strTmp = '<meta name="description" content="' . $arrayTitles['desc'] . '" />';
+                $node = New Bshe_Dom_Node_SingleElement($strTmp, 'meta');
+                $template->addChild($node, $headerElement);
+            } else {
+                // 上書き
+                $template->setAttribute($arrayTags['description'], 'context', $arrayTitles['description']);
+            }
+
+            if ($arrayTags['keywords'] === false) {
+                // headへ追加
+                $strTmp = '<meta name="keywords" content="' . $arrayTitles['keywords'] . '" />';
+                $node = New Bshe_Dom_Node_SingleElement($strTmp, 'meta');
+                $template->addChild($node, $headerElement);
+            } else {
+                // 上書き
+                $template->setAttribute($arrayTags['keywords'], 'context', $arrayTitles['keywords']);
+            }
+
+            return $template;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }

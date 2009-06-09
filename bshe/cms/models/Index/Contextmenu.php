@@ -146,8 +146,40 @@ class Bshe_Cms_Models_Index_Contextmenu extends Bshe_View_Plugin_Jquery_Contextm
      *
      * @return unknown_type
      */
-    static public function doEditProperty()
+    static public function doEditProperty($values)
     {
+        try {
+            $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
 
+            $response = new xajaxResponse();
+
+            $mainPath = Bshe_Controller_Init::getMainPath();
+
+            // 対象ファイルのテンプレートクラスを生成
+            $params['templatePath'] = $mainPath . $config->alias_path . $config->template_path;
+            $params['templateFile'] = str_replace(':', '/', substr($values['target'], strlen('target:')));
+            $view = New Bshe_View($params);
+            $template = $view->getEngine()->getTemplate();
+
+            // 対象ファイルのキャッシュクラス生成
+            $titleCache = New Bshe_Specializer_Cms_Cache_Title($template);
+
+            $arrayTitles = array(
+                'title' => $values['title'],
+                'desc' => $values['desc'],
+                'keywords' => $values['keywords']
+            );
+
+            $titleCache->publishContents($arrayTitles);
+
+            $response->assign('bsheeditpropertyresult', 'innerHTML', 'ページ情報を変更しました。');
+
+            $response->redirect( "./sitemap.html" );
+
+            return $response;
+
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }
