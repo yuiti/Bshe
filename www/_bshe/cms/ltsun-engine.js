@@ -864,12 +864,13 @@ var LTSun = new LTSun_Engine();
 	--------------
 	So the Must wait till the Editor Loads
 ----------------------------------------------------------------------------------------*/
-	LTSun.showLoadingWindow({animationSpeed: 600});
-	var loadingWindowInterval = setInterval(LTSun.resizeLoadingWindow, 10);
+//	LTSun.showLoadingWindow({animationSpeed: 600});
+//	var loadingWindowInterval = setInterval(LTSun.resizeLoadingWindow, 10);
+var loadingWindowInterval;
 
 /*----------------------------------------------------------------------------------------
 	Load LTSun Engine
 	-----------------
 	First Load LTSun Engine, then load all the modules.
 ----------------------------------------------------------------------------------------*/
-window.onload = function(){LTSun.init(LTSunSettings);};
+//window.onload = function(){LTSun.init(LTSunSettings);};

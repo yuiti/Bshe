@@ -31,8 +31,9 @@
 	------------------
 	This module will make any element editable with as true to WYSIWYG as possible.
 ----------------------------------------------------------------------------------------*/
+	alert('a');
 
-LTSun_AddModule(initTextModule);
+//LTSun_AddModule(initTextModule);
 
 function initTextModule()
 {
@@ -185,14 +186,8 @@ LTSun.updateWindowHeight = function(windowHeight, elementId)
 ----------------------------------------------------------------------------------------*/
 LTSun.updateTextModuleHTML = function(elementId, html, saveOkay)
 {
-/*
-	document.getElementById(elementId).contentWindow.document.body.innerHTML = html;
-	document.getElementById(elementId).contentWindow.updateWindowHeight();
-	if(saveOkay) LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-save.html", elementId, document.getElementById(elementId).contentWindow.document.body.innerHTML, true, null, null);
-	LTSun.hideWindow({});
-*/
+
 document.getElementById(elementId).innerHTML = html;
-//document.getElementById(elementId).contentWindow.updateWindowHeight();
 if(saveOkay) LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-save.html", elementId, document.getElementById(elementId).innerHTML, true, null, null);
 LTSun.hideWindow({});
 document.getElementById(elementId).focus();
@@ -246,8 +241,6 @@ LTSun.hideTextMessage = function(elementId)
 ----------------------------------------------------------------------------------------*/
 LTSun.saveTextModule = function(fileName, elementId, html, displayResponse, onSuccess, onFailure)
 {
-//	var pageId = LTSunSettings["selectText"+elementId+"PageId"];
-//	var stringDataHTML = (html.length > 5 ? html : document.getElementById(elementId).contentWindow.document.body.innerHTML);
 	var stringDataHTML = (html.length > 5 ? html : document.getElementById(elementId).innerHTML);
 
 	if(displayResponse)
@@ -351,20 +344,8 @@ LTSun.createTextControls = function(elementId)
 	var menuLeft = LTSun.getElementLeft(elementId);
 	var menuHTML = "";
 
-	menuHTML += "<div class='LTsun LTSunTextControlDiv'>";
-	menuHTML += "<div class='LTsun LTSunTextControlDivPadding'>";
-	menuHTML += "<table class='LTsun LTSunTextControlTable'>";
-	menuHTML += "<tr class='LTsun'>";
-	menuHTML += "<td class='LTsun' style='position:relative;'><div id='elementId_saveText' title='" + LTSunSettings['titleTextControls_save'] + "' class='LTsun LTSunButtonStandard LTSunSaveButton'></div></td>";
-	menuHTML += "<td class='LTsun' style='position:relative;'><div id='elementId_publishText' title='" + LTSunSettings['titleTextControls_publish'] + "' class='LTsun LTSunButtonStandard LTSunPublishButton'></div></td>";
-	menuHTML += "<td class='LTsun' style='position:relative;'><div id='elementId_advancedEditorText' title='" + LTSunSettings['titleTextControls_edit'] + "' class='LTsun LTSunButtonStandard LTSunEditButton'></div></td>";
-	menuHTML += "<td class='LTsun' style='position:relative;'><div id='elementId_revisionsText' title='" + LTSunSettings['titleTextControls_revisions'] + "' class='LTsun LTSunButtonStandard LTSunRevisionsButton'></div></td>";
-	menuHTML += "<td class='LTsun'>&nbsp;&nbsp;&nbsp;</td>";
-	menuHTML += "<td class='LTsun' style='position:relative;'><div id='elementId_menu' title='" + LTSunSettings['titleTextControls_menu'] + "' class='LTsun LTSunButtonStandard LTSunLogoutButton'></div></td>";
-	menuHTML += "</tr>";
-	menuHTML += "</table></div></div>";
+	menuHTML += "<div class='LTsun LTSunTextControlDiv bshe_cms_menu'></div>";
 
-	menuHTML = menuHTML.replace(/elementId_/gi, elementId + "_");
 	menuDiv.innerHTML = menuHTML;
 
 	menuDiv.style.position = "absolute";
@@ -381,115 +362,6 @@ LTSun.createTextControls = function(elementId)
 	LTSun.textEditorButtonInstances.push(menuDiv);
 	document.body.appendChild(menuDiv);
 
-	/*----------------------------------------------------------------------------------------
-		Save Text
-		---------
-		This button calls on noinc-save.php with AJAX to save the text then displays a window
-		with confirmation where options of publishing are presented.
-	----------------------------------------------------------------------------------------*/
-	document.getElementById(elementId + "_saveText").onclick = function()
-	{
-		LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-save.html", elementId, "", true, null, null);
-	};
-
-
-	/*----------------------------------------------------------------------------------------
-		Publish Text
-		------------
-		Saves current text twice: once as published.htm and again as date-time.htm.
-	----------------------------------------------------------------------------------------*/
-	document.getElementById(elementId + "_publishText").onclick = function()
-	{
-		LTSun.showTextMessage(elementId, "Publishing Content...");
-		LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-publish.html", elementId, "", false, null, null);
-		LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-save.html", elementId, "", false,
-		function()
-		{
-			LTSun.changeTextMessage(elementId, "Publish Complete");
-			setTimeout("LTSun.hideTextMessage('"+elementId+"');", 2000);
-		},
-		function()
-		{
-			LTSun.changeTextMessage(elementId, "<span style='color:#ff0000;'>Publish ERROR!</span>");
-			setTimeout("LTSun.hideTextMessage('"+elementId+"');", 1000);
-		});
-	};
-
-
-	/*----------------------------------------------------------------------------------------
-		Advanced Editor Text
-		--------------------
-		Load an HTML editor that has all the supreme HTML customizing features.
-	----------------------------------------------------------------------------------------*/
-	document.getElementById(elementId + "_advancedEditorText").onclick = function()
-	{
-		var advEditorURL = "";
-		var pageId = LTSunSettings["selectText"+elementId+"PageId"];
-
-		advEditorURL += LTSunSettings['bshe_indexphp_path'] + "/text/noinc-advEditor.html?css=" + LTSun.settings['cascadingStyleSheet'] +
-						"&elementClass=" + $(elementId).className +
-						"&pageId=" + LTSun.settings['bshe_templatename'] +
-						"&elementId=" + elementId;
-
-		LTSun.showWindow({
-			size: "large",
-			bgColor: "#ffffff",
-			animationSpeed: 100,
-			url: advEditorURL,
-			okAvailable: false,
-			cancelAvailable: false
-		});
-	};
-
-
-	/*----------------------------------------------------------------------------------------
-		Revisions for Text
-		------------------
-		Displays a window with all save history of the text editor instance. The user can
-		restore any point thye wish guided by date and time markers.
-	----------------------------------------------------------------------------------------*/
-	document.getElementById(elementId + "_revisionsText").onclick = function()
-	{
-		var revisionsURL = "";
-//		var pageId = LTSunSettings["selectText"+elementId+"PageId"];
-
-		revisionsURL += LTSunSettings['bshe_indexphp_path'] + "/text/noinc-revisions.html?css=" + LTSun.settings['cascadingStyleSheet'] +
-						"&elementClass=" + $(elementId).className +
-						"&pageId=" + LTSun.settings['bshe_templatename']  +
-						"&elementId=" + elementId;
-
-		LTSun.showWindow({
-			size: "large",
-			bgColor: "#ffffff",
-			animationSpeed: 100,
-			url: revisionsURL,
-			okAvailable: false,
-			cancelAvailable: false
-		});
-	};
-
-
-	/*----------------------------------------------------------------------------------------
-		About LTSun-Engine
-		------------------
-		Opens an internal window which displays LightTheSun CMS About.
-	----------------------------------------------------------------------------------------*/
-/*	document.getElementById(elementId + "_logout").onclick = function()
-	{
-		//ログアウト
-		location.href = location.href + '?bshe_specializer_auth=logout';
-	};
-*/
-	/*----------------------------------------------------------------------------------------
-	About LTSun-Engine
-	------------------
-	Opens an internal window which displays LightTheSun CMS About.
-	----------------------------------------------------------------------------------------*/
-	document.getElementById(elementId + "_menu").onclick = function()
-	{
-		//ログアウト
-		location.href = LTSunSettings['bshe_indexphp_path'] + '/admin/index.html';
-	};
 	return true;
 };
 
@@ -499,7 +371,6 @@ Image Module
 ---------------
 
 ----------------------------------------------------------------------------------------*/
-LTSun_AddModule(initImageModule);
 
 function initImageModule()
 {
@@ -679,7 +550,6 @@ else
 	$("imagePublish_" + elementId).value = "Publish";*/
 }
 };
-
 
 
 

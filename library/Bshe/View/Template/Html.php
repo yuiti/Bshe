@@ -1016,7 +1016,28 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
         } catch (Exception $e) {
             throw $e;
         }
+    }
 
+    /**
+     * 親ノードの最初の子供としてノードを追加する。
+     *
+     * @param $parentNumber
+     * @return unknown_type
+     */
+    public function insertChild($insertNodeClass, $parentNumber)
+    {
+        try {
+            $arrayChildren = $this->getElementNumber($parentNumber)->getChildNumbers();
+            if (count($arrayChildren) == 0) {
+                // 子供がいないためただの追加
+                $this->addChild($insertNodeClass, $parentNumber);
+            } else {
+                $newNodeNum = $this->newNode($insertNodeClass);
+                $this->insertBefore($newNodeNum, $arrayChildren[0]);
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     /**

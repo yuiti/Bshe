@@ -38,7 +38,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
      * @param $arrayParams
      * @return unknown_type
      */
-    static public function assignValuesNoincblankbody($arrayParams)
+/*    static public function assignValuesNoincblankbody($arrayParams)
     {
         try {
             Bshe_Log::logWithFileAndParamsWrite('NonicblancHeaderセット開始', Zend_Log::DEBUG);
@@ -91,7 +91,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             throw $e;
         }
     }
-
+*/
 
 
     /**
@@ -100,7 +100,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
      * @param $arrayParams
      * @return unknown_type
      */
-    static public function assignValuesNoincblankhead($arrayParams)
+/*    static public function assignValuesNoincblankhead($arrayParams)
     {
         try {
             Bshe_Log::logWithFileAndParamsWrite('NonicblancHeaderセット開始', Zend_Log::DEBUG);
@@ -166,7 +166,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             throw $e;
         }
     }
-
+*/
 
 
     /**
@@ -185,10 +185,10 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             $insertNodeClasses = array();
             $strScript =
                 '<form action="noinc-advEditor.html" onSubmit="return false;" onBeforeSubmit="return false;">' . "\n" .
-                '<div id="LTSunAdvancedTextEditor" class="' . $_GET['elementClass'] . '" style="width:100%;height:455px;"></div>' . "\n" .
+                '<div id="bsheAdvancedTextEditor" class="' . $_GET['elementClass'] . '" style="width:100%;height:455px;"></div>' . "\n" .
                 '</form>' . "\n" .
                 '<script type="text/javascript" language="javascript">' .
-                'document.getElementById("LTSunAdvancedTextEditor").innerHTML = window.parent.LTSun.getTextModuleHTML("' . $_GET['elementId'] . '");' . "\n" .
+                'document.getElementById("bsheAdvancedTextEditor").innerHTML = document.getElementById("' . $_GET['elementId'] . '").innerHTML;' . "\n" .
                 '</script>' . "\n" .
                 '<script language="javascript" type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>' . "\n" .
                 '<script type="text/javascript" language="javascript">' . "\n" .
@@ -225,7 +225,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                 '});' . "\n" .
                 'function updateTextModule(element_id, html, body)' . "\n" .
                 '{' . "\n" .
-                'window.parent.LTSun.updateTextModuleHTML("' . $_GET['elementId'] . '", html, false);' . "\n" .
+                'jQuery("#' . $_GET['elementId'] . '").updateTextModuleHTML(html, false);' . "\n" .
                 'return html;' . "\n" .
                 '}' . "\n" .
 //                'function onInitComplete()' . "\n" .
@@ -374,12 +374,29 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                             )
                     );
 
+                    $strClass = 'bshe_cms_text ';
+                    $strClass .= $arrayParams['templateClass']->getAttribute($arrayParams['element'], "class");
+
+                $arrayAssign[] =
+                    array(
+                        'method' => 'a',
+                        'element' => $arrayParams['element'],
+                        'params' =>
+                            array(
+                                0 => 'class',
+                                1 => $strClass,
+                                2 => $arrayParams['params']['helperName'],
+                                3 => $arrayParams['params']['helperParams']
+                            )
+                    );
             }
 
 
             foreach ($arrayAssign as $key => $assign) {
                 $arrayParams['templateClass'] = self::assign($arrayParams['templateClass'], $assign);
             }
+
+
 
             $arrayParams['templateClass']->setParam('pluginFlags', $arrayPluginFlags);
 
@@ -495,7 +512,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
 
 
                 // Javascript出力
-                $strScript =
+ /*               $strScript =
                 	"<script type=\"text/javascript\" language=\"javascript\">" .
                     "LTSunSettings['selectImageElement'].push(\"".$id."\");" .
                     "LTSunSettings['$id'] = " .
@@ -506,7 +523,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                     ;
                 $node = New Bshe_Dom_Node_Text($strScript);
                 $nodeId = $arrayParams['templateClass']->newNode($node);
-                $arrayParams['templateClass']->insertBefore($nodeId, $arrayParams['element']);
+                $arrayParams['templateClass']->insertBefore($nodeId, $arrayParams['element']);*/
             }
 
 

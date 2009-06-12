@@ -32,13 +32,13 @@
 	height: 30px;
 	cursor: default;
 	background: transparent;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/drop-panel-bg.png');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/edit-panel.png');
 }
 .LTSunTextControlDiv[class] {
 	width: 120px;
 	height: 30px;
 	cursor: default;
-	background: transparent url(media/drop-panel-bg.png) no-repeat;
+	background: transparent url(media/edit-panel.png) no-repeat;
 }
 .LTSunTextControlDivPadding {
 	padding-top: 2px;
@@ -80,3 +80,30 @@
 
 .LTSunLogoutButton { background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/logout.png', sizingMethod='crop'); }
 .LTSunLogoutButton[class] { background: transparent url(media/logout.png) no-repeat; }
+
+
+#bshe_cmsmode_header {
+	width: 100%;
+	height: 30px;
+	background-color: white;
+	border-bottom: ridge;
+}
+
+#bshe_cmsmode_header div {
+	height: 100%;
+	float: left;
+}
+
+#bshe_cmsmode_header img {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
+	padding-right: 10px;
+	height: 28px;
+}
+
+#bshe_cmsmode_header span {
+	vertical-align: text-top;
+	padding-top: 3px;
+	font-size: 10px;
+}

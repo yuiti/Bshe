@@ -26,7 +26,7 @@ require_once 'Bshe/Specializer/Controller/Action/Abstract.php';
 class Bshe_Specializer_Controller_Action_Default extends Bshe_Specializer_Controller_Action_Abstract
 {
 
-    
+
     /**
      * Retrieve base path based on location of current action controller
      *
@@ -44,7 +44,7 @@ class Bshe_Specializer_Controller_Action_Default extends Bshe_Specializer_Contro
             throw $e;
         }
     }
-    
+
     /**
      * Bshe_Specializerの基本処理アクション
      * 基本はヘルパーで処理される
@@ -53,6 +53,7 @@ class Bshe_Specializer_Controller_Action_Default extends Bshe_Specializer_Contro
     public function indexAction()
     {
         try {
+
         } catch (Exception $e) {
             throw $e;
         }

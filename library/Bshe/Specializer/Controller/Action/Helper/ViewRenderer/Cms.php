@@ -43,6 +43,10 @@ class Bshe_Specializer_Controller_Action_Helper_ViewRenderer_Cms extends Bshe_Sp
                     array (
                     'className' => 'Bshe_View_Plugin_Cms',
                     'methodName' => 'chkCmsForm'
+                    ),
+                    array (
+                    'className' => 'Bshe_View_Plugin_Cms',
+                    'methodName' => 'setXajaxFunctions'
                     )
                 )
         );

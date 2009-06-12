@@ -55,6 +55,9 @@ class Bshe_View_Plugin_Jquery extends Bshe_View_Plugin_Abstract
             // メインのjquery
             $strTmp = '<script src="' . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/jquery/jquery.js" type="text/javascript"></script>';
             $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
+            // 共存
+            $strTmp = '<script type="text/javascript">jQuery.noConflict();</script>';
+            $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
 
             foreach ($arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'] as $key => $target) {
                 if (substr($target, 0, 1) == '/') {
@@ -76,9 +79,6 @@ class Bshe_View_Plugin_Jquery extends Bshe_View_Plugin_Abstract
                     }
                 }
             }
-            // 共存
-            $strTmp = '<script type="text/javascript">jQuery.noConflict();</script>';
-                        $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
 
 
             foreach ($insertNodeClasses as $key => $node) {

@@ -24,5 +24,14 @@
 class Bshe_Specializer_Xajax_Cms_Text extends Bshe_Specializer_Xajax_Abstract
 {
 
+    /**
+     * Xajax用メソッド
+     * テキストの下書き保存
+     *
+     * @return unknown_type
+     */
+    static public function saveText()
+    {
 
+    }
 }

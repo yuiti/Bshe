@@ -20,7 +20,7 @@
  * @created 2009.01.19
  * @license LGPL
  */
-class Bshe_Specializer_Controller_Action_Xajax_Abstract
+class Bshe_Specializer_Controller_Action_Xajax_Abstract extends Bshe_Specializer_Xajax_Abstract
 {
 
 }
