@@ -178,61 +178,54 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
     static public function assignValuesNoincadvblankbody($arrayParams)
     {
         try {
-            Bshe_Log::logWithFileAndParamsWrite('NoincadvblankHeaderセット開始', Zend_Log::DEBUG);
+            Bshe_Log::logWithFileAndParamsWrite('Noincadvblankbodyセット開始', Zend_Log::DEBUG);
             $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
 
             // nonic-blankへJavascriptを設置
             $insertNodeClasses = array();
             $strScript =
                 '<form action="noinc-advEditor.html" onSubmit="return false;" onBeforeSubmit="return false;">' . "\n" .
-                '<div id="bsheAdvancedTextEditor" class="' . $_GET['elementClass'] . '" style="width:100%;height:455px;"></div>' . "\n" .
+                '<div id="bsheAdvancedTextEditor" class="' . $_GET['elementClass'] . '" style="width:100%;height:450px;"></div>' . "\n" .
                 '</form>' . "\n" .
+                '<script language="javascript" type="text/javascript" src="' . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/tiny_mce/tiny_mce_src.js"></script>' .
                 '<script type="text/javascript" language="javascript">' .
-                'document.getElementById("bsheAdvancedTextEditor").innerHTML = document.getElementById("' . $_GET['elementId'] . '").innerHTML;' . "\n" .
+                    'document.getElementById("bsheAdvancedTextEditor").innerHTML = window.parent.document.getElementById("' . $_GET['elementId'] . '").innerHTML;' . "\n" .
                 '</script>' . "\n" .
-                '<script language="javascript" type="text/javascript" src="../../tiny_mce/tiny_mce.js"></script>' . "\n" .
                 '<script type="text/javascript" language="javascript">' . "\n" .
-                'tinyMCE.init({' . "\n" .
-                    'mode : "exact",' . "\n" .
-                    "language : 'ja'," . "\n" .
-//                    'height : "200",' . "\n" .
-//                    'width : "800",' . "\n" .
-//                    'debug : true,' . "\n" .
-                    'elements : "LTSunAdvancedTextEditor",' . "\n" .
-                    'theme : "advanced",' . "\n" .
-                    'plugins : "style,layer,save,advhr,advimage,advlink,preview,paste,fullscreen,nonbreaking,table,xhtmlxtras",' . "\n" .
-                    'theme_advanced_buttons1_add_before : "save,newdocument,separator",' . "\n" .
-                    'theme_advanced_buttons2_add : "separator,preview,separator,forecolor,backcolor",' . "\n" .
-                    'theme_advanced_buttons3_add : "fontselect,fontsizeselect",' . "\n" .
-                    'theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,|,visualchars,nonbreaking,|,tablecontrols",' . "\n" .
-                    'theme_advanced_toolbar_location : "top",' . "\n" .
-                    'theme_advanced_toolbar_align : "left",' . "\n" .
-                    'theme_advanced_path_location : "bottom",' . "\n" .
-                    'plugin_insertdate_dateFormat : "%Y-%m-%d",' . "\n" .
-                    'plugin_insertdate_timeFormat : "%H:%M:%S",' . "\n" .
-                    'extended_valid_elements : "hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",' . "\n" .
-                    'theme_advanced_resize_horizontal : false,' . "\n" .
-                    'theme_advanced_resizing : false,' . "\n" .
-                    'nonbreaking_force_tab : true,' . "\n" .
-                    'paste_create_linebreaks : true,' . "\n" .
-                    'paste_create_paragraphs : false,' . "\n" .
-                    'paste_remove_spans : true,' . "\n" .
-                    'paste_remove_styles : true,' . "\n" .
-                    'save_callback: "updateTextModule"' . "\n" .
-                    ',theme_advanced_blockformats : "div,p,h1,h2,h3,h4,h5,h6,blockquote,dt,dd,samp"' . "\n" .
-                    ',forced_root_block : ""' . "\n" .
-//                    'init_instance_callback : "onInitComplete"' . "\n" .
-                '});' . "\n" .
-                'function updateTextModule(element_id, html, body)' . "\n" .
-                '{' . "\n" .
-                'jQuery("#' . $_GET['elementId'] . '").updateTextModuleHTML(html, false);' . "\n" .
-                'return html;' . "\n" .
-                '}' . "\n" .
-//                'function onInitComplete()' . "\n" .
-//                '{' . "\n" .
-//                    "document.getElementById('LTSunAdvancedTextEditor').contentWindow.document.body.className = '" . $_GET['elementClass'] . " mceEditorIframe';" . "\n" .
-//                '}' . "\n" .
-                '</script>'
+                    'tinyMCE.init({' . "\n" .
+                        "language : 'ja'," . "\n" .
+                        'mode : "exact",' . "\n" .
+                        'elements : "bsheAdvancedTextEditor",' . "\n" .
+                        'theme : "advanced",' . "\n" .
+                        'plugins : "style,layer,save,advhr,advimage,advlink,preview,paste,fullscreen,nonbreaking,table,xhtmlxtras",' . "\n" .
+                        'theme_advanced_buttons1_add_before : "save,newdocument,separator",' . "\n" .
+                        'theme_advanced_buttons2_add : "separator,preview,separator,forecolor,backcolor",' . "\n" .
+                        'theme_advanced_buttons3_add : "fontselect,fontsizeselect",' . "\n" .
+                        'theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,|,visualchars,nonbreaking,|,tablecontrols",' . "\n" .
+                        'theme_advanced_toolbar_location : "top",' . "\n" .
+                        'theme_advanced_toolbar_align : "left",' . "\n" .
+                        'theme_advanced_path_location : "bottom",' . "\n" .
+                        'plugin_insertdate_dateFormat : "%Y-%m-%d",' . "\n" .
+                        'plugin_insertdate_timeFormat : "%H:%M:%S",' . "\n" .
+                        'extended_valid_elements : "hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",' . "\n" .
+                        'theme_advanced_resize_horizontal : false,' . "\n" .
+                        'theme_advanced_resizing : false,' . "\n" .
+                        'nonbreaking_force_tab : true,' . "\n" .
+                        'paste_create_linebreaks : true,' . "\n" .
+                        'paste_create_paragraphs : false,' . "\n" .
+                        'paste_remove_spans : true,' . "\n" .
+                        'paste_remove_styles : true,' . "\n" .
+                        'save_callback: "baheupdateTextModule"' . "\n" .
+                        ',theme_advanced_blockformats : "div,p,h1,h2,h3,h4,h5,h6,blockquote,dt,dd,samp"' . "\n" .
+                        ',forced_root_block : ""' . "\n" .
+                    '});' . "\n" .
+                    'function baheupdateTextModule(element_id, html, body)' . "\n" .
+                    '{' . "\n" .
+                    	'var el =window.parent.document.getElementById("' . $_GET['elementId'] . '");' . "\n" .
+                    	'el.updateTextModuleHTML(html, false);' . "\n" .
+                    	'return html;' . "\n" .
+                    '}' . "\n" .
+                '</script>' . "\n"
             ;
 
             $insertNodeClasses[] = New Bshe_Dom_Node_Text($strScript);
@@ -247,7 +240,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             $arrayPluginFlags['Bshe_View_Plugin_Cms'] = false;
             $arrayParams['templateClass']->setParam('pluginFlags', $arrayPluginFlags);
 
-            Bshe_Log::logWithFileAndParamsWrite('NonicblancHeaderセット完了', Zend_Log::DEBUG);
+            Bshe_Log::logWithFileAndParamsWrite('Noincadvblankbodyセット完了', Zend_Log::DEBUG);
             return $arrayParams['templateClass'];
         } catch (Exception $e) {
             throw $e;
@@ -271,7 +264,8 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                 '<script type="text/javascript" language="javascript">' .
                 'function updateTextModule(id)' .
                 '{' .
-                'window.parent.LTSun.updateTextModuleHTML("' . $_GET['elementId'] . '", document.getElementById(id).innerHTML, false);' .
+                'el =window.parent.document.getElementById("' . $_GET['elementId'] . '");' . "\n" .
+            	'el.updateTextModuleHTML(document.getElementById(id).innerHTML);' . "\n" .
                 '}' .
                 'function highlight(id)' .
                 '{' .
@@ -359,7 +353,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                 // ログイン中編集モード
                 Bshe_Log::logWithFileAndParamsWrite('edittextセット、ログイン中', Zend_Log::DEBUG);
 
-                $arrayPluginFlags['Bshe_View_Plugin_Cms']['selectTextElementEditable'][] = $id;
+                //$arrayPluginFlags['Bshe_View_Plugin_Cms']['selectTextElementEditable'][] = $id;
 
                 $arrayAssign[] =
                     array(
@@ -508,7 +502,21 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                     }
 
                 }
+                $strClass = 'bshe_cms_img ';
+                $strClass .= $arrayParams['templateClass']->getAttribute($arrayParams['element'], "class");
 
+                $arrayAssign[] =
+                    array(
+                        'method' => 'a',
+                        'element' => $arrayParams['element'],
+                        'params' =>
+                            array(
+                                0 => 'class',
+                                1 => $strClass,
+                                2 => $arrayParams['params']['helperName'],
+                                3 => $arrayParams['params']['helperParams']
+                            )
+                    );
 
 
                 // Javascript出力

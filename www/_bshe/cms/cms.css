@@ -1,0 +1,50 @@
+.Bshe table, tr, td {
+	 border-collapse: collapse;
+	 border: 0px;
+	 margin: 0px;
+	 padding: 0px;
+}
+
+.BsheTextControlDiv {
+	width: 79px;
+	height: 30px;
+	cursor: default;
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='media/edit-panel.png');
+}
+
+.BsheTextControlDiv[class] {
+	width: 79px;
+	height: 30px;
+	cursor: default;
+	background: transparent url(media/edit-panel.png) no-repeat;
+}
+
+.Bshe div { background-color: transparent; }
+
+
+#bshe_cmsmode_header {
+	width: 100%;
+	height: 30px;
+	background-color: white;
+	border-bottom: ridge;
+}
+
+#bshe_cmsmode_header div {
+	height: 100%;
+	float: left;
+}
+
+#bshe_cmsmode_header img {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
+	padding-right: 10px;
+	height: 28px;
+}
+
+#bshe_cmsmode_header span {
+	vertical-align: text-top;
+	padding-top: 3px;
+	font-size: 10px;
+}

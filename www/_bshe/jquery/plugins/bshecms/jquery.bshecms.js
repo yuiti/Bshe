@@ -26,56 +26,123 @@
 	        //要素を一個ずつ処理
 	        elements.each(function() {
 
+	        	var target = this;
+
 	        	// textコントローラー作成
-	            var menuDiv = document.createElement("div");
-
-	            var menuTop = $(this).offset().top;
-	            var menuLeft = $(this).offset().left;
-
-	            var menuHTML = "";
-	            menuHTML += "<div class='LTsun LTSunTextControlDiv bshe_cms_menu' id='bshe_cms_text__" + $(this).attr('id') + "'></div>";
-	            menuDiv.innerHTML = menuHTML;
-
-	            menuDiv.style.position = "absolute";
-	            menuDiv.style.overflow = "hidden";
-	            menuDiv.style.top = menuTop + 'px';
-	            menuDiv.style.zIndex = 50;
-	            menuDiv.style.left = menuLeft + 'px';
-	            menuDiv.style.height = '30px';
-
+	            var menuDiv = $(document.createElement("div"));
+	            menuDiv
+	            	.attr({
+	            	'class': 'Bshe BsheTextControlDiv bshe_cms_menu',
+	            	'id': 'bshe_cms_text__' + $(target).attr('id')
+            	});
+	            menuDiv.replace = function() {
+	            	this.css({
+	            		'position': "absolute",
+	            		'overflow': "hidden",
+	            		'top': $(target).offset().top + 'px',
+	            		'zIndex': 50,
+	            		'left': $(target).offset().left + 'px',
+	            		'height': '30px'
+	            	});
+	            	return this;
+	            };
 	            menuDiv.changeOpacity = function(opacity) {
-	            	this.style.opacity = (opacity / 100);
-	            	this.style.MozOpacity = (opacity / 100);
-	            	this.style.KhtmlOpacity = (opacity / 100);
-	            	this.style.filter = "alpha(opacity=" + opacity + ")";
+	            	this.css({
+	            		'opacity':  (opacity / 100),
+	            		'MozOpacity': (opacity / 100),
+	            		'KhtmlOpacity': (opacity / 100),
+	            		'filter': "alpha(opacity=" + opacity + ")"
+	            	});
+	            	return this;
 		    	};
 
-		    	menuDiv.changeOpacity(30);
 
-	            menuDiv.onmouseover = function() {
-	            	this.style.height = '30px';
-	            	this.changeOpacity(100);
-	            };
-	            menuDiv.onmouseout = function() {
-	            	this.style.height = '30px';
-	            	this.changeOpacity(30);
-	            };
+	            menuDiv.mouseover(function() {
+	            	$(this).css({ height: '30px'});
+	            	$(this).fadeTo("slow", 1);
+	            	return $(this);
+	            });
+		        menuDiv.mouseout(function() {
+		        	$(this).css({ height: '30px'});
+		        	$(this).fadeTo("slow", 0.30);
+	            	return $(this);
+	            });
+	            menuDiv.replace()
+			    	.fadeTo("slow", 0.30)
+	            	.appendTo($(document.body));
 
-	            document.body.appendChild(menuDiv);
+			    $(window).bind("resize", function() {menuDiv.replace()});
+
+
 
 	            // 直接編集エリア生成
-	            $(this).attr("contenteditable","true");
-	        	if( $(this).html() ) {
-	        		$(this).html($(this).html());
-	        	}
+	            $(this).attr("contentEditable","true");
+	        	//if( $(this).html() ) {
+	        	//	$(this).html($(this).html());
+	        	//}
+	        	//$(this).focus();
 
-	        	$(this).updateTextModuleHTML = function(html, saveOkay) {
-	        		$(this).text(html);
-	        		if(saveOkay) LTSun.saveTextModule(LTSunSettings['bshe_indexphp_path'] + "/text/noinc-save.html", elementId, document.getElementById(elementId).innerHTML, true, null, null);
-	        		LTSun.hideWindow({});
-	        		document.getElementById(elementId).focus();
+	            this.updateTextModuleHTML = function(html) {
+	        		$(this).html(html);
+	        		//if(saveOkay) $(this).saveTextModule($(this).text(), true, null, null);
+	        		SexyLightbox.display(0);
+	        		$(this).focus();
 	        	};
 
+	        	// メッセージ表示
+	        	this.showTextMessage = function(message) {
+	        		var srcLDiv = document.createElement("div");
+	        		var msgWidth = $(this).width();
+	        		var msgHeight = $(this).height();
+	        		var msgTop = $(this).offset().top;
+	        		var msgLeft = $(this).offset().left;
+
+	        		srcLDiv.id = "bshe_window_srcLDiv" + $(this).attr('id');
+	        		srcLDiv.style.opacity = 0.8;
+	        		srcLDiv.style.filter = "alpha(opacity=80)";
+	        		srcLDiv.style.width = msgWidth + 'px';
+	        		srcLDiv.style.height = msgHeight + 'px';
+	        		srcLDiv.style.position = "absolute";
+	        		srcLDiv.style.top = msgTop + 'px';
+	        		srcLDiv.style.left = msgLeft + 'px';
+	        		srcLDiv.style.zIndex = 2000;
+	        		srcLDiv.style.backgroundColor = "#000000";
+	        		srcLDiv.innerHTML = "<table width='"+msgWidth+"' height='"+msgHeight+"' cellpadding='0' cellspacing='0' border='0' style='border-collapse:collapse;'><tr><td style='line-height:18px;font-size:20px;color:#ffffff;text-align:center;font-weight:bold;cursor:default;' id='bshe_window_srcLDiv_content_"+$(this).attr('id')+"'>" + message + "</td></tr></table>";
+
+	        		document.body.appendChild(srcLDiv);
+	        	}
+
+	        	// メッセージ内容変更
+	        	this.changeTextMessage = function(message) {
+	        		if($("bshe_window_srcLDiv" + this.id)) $("bshe_window_srcLDiv" + this.id).html(message);
+	        	}
+
+	        	this.hideTextMessage = function() {
+	        		//if($("bshe_window_srcLDiv" + this.id)) {
+	        			document.body.removeChild(document.getElementById("bshe_window_srcLDiv" + this.id));
+	        		//}
+	        	}
+
+	        	// 下書き保存
+	        	this.saveTextModule = function() {
+	        		this.showTextMessage('下書き保存中');
+	        		xajax_saveText(bshe_templatename, this.id, this.innerHTML);
+	        		this.hideTextMessage();
+	        	}
+
+	        	// 保存公開
+	        	this.publishTextModule = function() {
+	        		this.showTextMessage('保存公開中');
+	        		xajax_publishText(bshe_templatename, this.id, this.innerHTML);
+	        		this.hideTextMessage();
+	        	}
+
+	        	// 元に戻す
+	        	this.undoTextModule = function() {
+	        		this.showTextMessage('元に戻す');
+	        		xajax_undoText(bshe_templatename, this.id);
+	        		this.hideTextMessage();
+	        	}
 	        });
 	        //method chain
 	        return this;
@@ -83,3 +150,4 @@
 
 
 })(jQuery);
+

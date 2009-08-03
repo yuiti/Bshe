@@ -60,8 +60,6 @@ class Bshe_View_Plugin_Sexylightbox extends Bshe_View_Plugin_Abstract
             $insertNodeClasses[] = New Bshe_Dom_Node_SingleElement($strTmp, 'link');
 //            $strTmp = "<script type=\"text/javascript\">" . "\n" . "window.addEvent('domready', function(){new SexyLightBox({find:'sexywhite',color:'white', OverlayStyles:{'background-color':'#000'}, imagesdir:'" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "/sexy-lightbox-2/sexyimages'});})" . "\n" . "</script>";
 //            $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
-            $strTmp = "<script type=\"text/javascript\">var bshe_basedir='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "';</script>";
-            $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
 
             foreach ($insertNodeClasses as $key => $node) {
                 $template->addChild($node, $headerElement);

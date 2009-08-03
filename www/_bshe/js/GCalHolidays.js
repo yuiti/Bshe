@@ -27,7 +27,7 @@ GCalHolidays.get = function(callback, year, month) {
     var start = [y, padZero(month || 1), "01"].join("-");
     var m = month || 12;
     var end = [y, padZero(m), padZero(new Date(y, m, 0).getDate())].join("-");
-    
+
     //取得済みの場合はそれを使う
     var cache = this.holidays[start + ".." + end];
     if (cache) {
@@ -36,7 +36,7 @@ GCalHolidays.get = function(callback, year, month) {
     }
 
     this.userCallback = callback;
-    
+
     //URL作成
     var url = location.protocol + "//www.google.com/calendar/feeds/";
     url += this.userId + "/" + this.visibility + "/" + this.projection;
@@ -57,13 +57,13 @@ GCalHolidays.get = function(callback, year, month) {
 GCalHolidays.decode = function(gdata) {
     var entries = gdata.feed.entry;
     var days = [];
-    
+
     if (entries) {
         //日付順にソート
         entries.sort(function(a, b) {
             return (a.gd$when[0].startTime > b.gd$when[0].startTime) ? 1 : -1;
         });
-        
+
         //シンプルな器に移す
         for (var i in entries) {
             var arr = entries[i].gd$when[0].startTime.split("-");
@@ -73,19 +73,21 @@ GCalHolidays.decode = function(gdata) {
             days[i] = {year: arr[0], month: arr[1], date: arr[2], title: entries[i].title.$t};
         }
     }
-    
+
     //日付範囲を取得
     var feedParts = gdata.feed.link[3].href.split("&");
     var start = "", end = "";
     for (i in feedParts) {
-        var params = feedParts[i].split("=");
-        switch (params[0]) {
-            case "start-min": start = params[1]; break;
-            case "start-max": end = params[1]; break;
+        if (parseInt(i).toString() != "NaN") {
+            var params = feedParts[i].split("=");
+            switch (params[0]) {
+                case "start-min": start = params[1]; break;
+                case "start-max": end = params[1]; break;
+            }
         }
     }
-    
+
     this.holidays[start + ".." + end] = days;    //キャッシュする
-    
+
     this.userCallback(days);    //コールバック
 };

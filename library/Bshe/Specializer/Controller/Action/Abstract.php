@@ -61,6 +61,7 @@ class Bshe_Specializer_Controller_Action_Abstract extends Bshe_Controller_Action
 
         Zend_Controller_Action_HelperBroker::addHelper($helper);
 
+
         parent::preDispatch();
     }
 

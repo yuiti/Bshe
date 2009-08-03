@@ -105,11 +105,6 @@ class Bshecms_IndexController extends Bshe_Specializer_Controller_Action_Bshe_De
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doCopy'
             );
-/*            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
-            array(
-                'Bshe_Cms_Models_Index_Contextmenu', 'doDelete'
-            );
- */
             $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
             array(
                 'Bshe_Cms_Models_Index_Contextmenu', 'doEditProperty'

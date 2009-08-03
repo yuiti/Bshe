@@ -12,6 +12,12 @@
  * @license    LGPL
  */
 
+/** Bshe_Specializer_Cms_Cache_Text */
+require_once 'Bshe/Specializer/Cms/Cache/Text.php';
+
+/** Bshe_Specializer_Xajax_Abstract */
+require_once 'Bshe/Specializer/Xajax/Abstract.php';
+
 /**
  * Bshe_Specializer_Xajax_Cms_Text
  *
@@ -30,8 +36,40 @@ class Bshe_Specializer_Xajax_Cms_Text extends Bshe_Specializer_Xajax_Abstract
      *
      * @return unknown_type
      */
-    static public function saveText()
+    static public function saveText($pageId, $targetElement, $html)
     {
+        try {
+            $cache = New Bshe_Specializer_Cms_Cache_Text($targetElement, null, null, urldecode($pageId));
+            $cache->saveContents($html);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
+    static public function publishText($pageId, $targetElement, $html)
+    {
+        try {
+            $cache = New Bshe_Specializer_Cms_Cache_Text($targetElement, null, null, urldecode($pageId));
+            $cache->saveContents($html);
+            $cache->publishContents($html);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    static public function undoText($pageId, $targetElement)
+    {
+        try {
+            $cache = New Bshe_Specializer_Cms_Cache_Text($targetElement, null, null, urldecode($pageId));
+            $html = $cache->undoContents();
+
+            // 元のelementの値も戻す
+            $response = new xajaxResponse();
+            $response->assign($targetElement, 'innerHTML', $cache->getContents());
+            return $response;
+
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

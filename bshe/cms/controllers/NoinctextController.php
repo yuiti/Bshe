@@ -40,17 +40,13 @@ class Bshecms_NoinctextController extends Bshe_Specializer_Controller_Action_Bsh
     }
 
 
-    public function noincblankAction()
-    {
-        try {
-            $this->indexAction();
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
     public function noincadveditorAction()
     {
         try {
+            $arrayPluginFlags = $this->view->getTemplatePluginFlags();
+            $arrayPluginFlags = Bshe_View_Plugin_Jquery_Contextmenu_Abstract::setJavascript($arrayPluginFlags);
+
+            $this->view->setTemplatePluginFlags($arrayPluginFlags);
             $this->indexAction();
         } catch (Exception $e) {
             throw $e;

@@ -58,8 +58,10 @@ class Bshe_Specializer_Cms_Cache_Text extends Bshe_Specializer_Cms_Cache_Abstrac
                 $this->_contents = $template->getNodeValue($elementId);
 
                 $this->_saveCmsCache($this->_cachePath . '/published.html', $this->_contents);
-                $this->_saveCmsCache($this->_cachePath . '/' . date('Y-m-d-H-i-s') . '.html', $this->_contents);
+                //$this->_saveCmsCache($this->_cachePath . '/' . date('Y-m-d-H-i-s') . '.html', $this->_contents);
                 $this->_saveCmsCache($this->_cachePath . '/default.html', $this->_contents);
+            } elseif (file_exists($this->_cachePath . '/preview.html')) {
+                $this->_contents = $this->_loadCmsCache($this->_cachePath . '/preview.html');
             } else {
                 $this->_contents = $this->_loadCmsCache($this->_cachePath . '/published.html');
             }
@@ -79,7 +81,7 @@ class Bshe_Specializer_Cms_Cache_Text extends Bshe_Specializer_Cms_Cache_Abstrac
     {
         try {
             $this->_contents = $contents;
-            $this->_saveCmsCache($this->_cachePath . '/' . date('Y-m-d-H-i-s') . '.html', $this->_contents);
+            $this->_saveCmsCache($this->_cachePath . '/preview.html', $this->_contents);
             return true;
         } catch (Exception $e) {
             throw $e;
@@ -98,12 +100,31 @@ class Bshe_Specializer_Cms_Cache_Text extends Bshe_Specializer_Cms_Cache_Abstrac
         try {
             $this->_contents = $contents;
             $this->_saveCmsCache($this->_cachePath . '/published.html', $this->_contents);
+            $this->_saveCmsCache($this->_cachePath . '/' . date('Y-m-d-H-i-s') . '.html', $this->_contents);
             return true;
         } catch (Exception $e) {
             throw $e;
         }
     }
 
+    /**
+     * publishをpreviewに戻す
+     *
+     * @param $contents
+     * @return unknown_type
+     */
+    public function undoContents()
+    {
+        try {
+            $contents = $this->_loadCmsCache($this->_cachePath . '/published.html');
+            $this->_saveCmsCache($this->_cachePath . '/preview.html', $contents);
+            $this->_contents = $contents;
+
+            return true;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 
     /**
      * コンテンツテキストを取得

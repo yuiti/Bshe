@@ -53,7 +53,14 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             array(
                 'Bshe_Specializer_Xajax_Cms_Text', 'saveText'
             );
-
+            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+            array(
+                'Bshe_Specializer_Xajax_Cms_Text', 'publishText'
+            );
+            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+            array(
+                'Bshe_Specializer_Xajax_Cms_Text', 'undoText'
+            );
             $template->setParam('pluginFlags', $arrayPluginFlags);
 
             return $template;
@@ -104,7 +111,7 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
 
             // トップに編集中を表示するHTMLを生成
             $strTmp = '<div id="bshe_cmsmode_header" class="bshe_cms_pagemenu"><div><img src="' . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/img/logo3.png" /></div>' .
-                 '<div><span>Bsheは編集モードです。</span><img src="' . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/media/edit-panel.png" /><span>が表示されている箇所は編集可能です。直接編集するか右クリックしてください。　また、この一番上の白い部分を右クリックするとページ全体への処理が行えます。</div></div>';
+                 '<div><span>Bsheは編集モードです。</span><img src="' . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/media/edit-panel.png" /><span>が表示されている箇所は編集可能です。直接編集するか右クリックしてください。</div></div>';
             $node = New Bshe_Dom_Node_Text($strTmp);
             // bodyのnodeクラスを取得
             $template->insertChild($node, $bodyElement);
@@ -115,16 +122,16 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
                   '<li class="edit"><b>　このブロック</b></li>' .
                   '<li class="edit"><a href="#editer">エディタ</a></li>' .
                   '<li class="edit"><a href="#save">下書き保存</a></li>' .
-                  '<li class="edit"><a href="#publish">下書を公開</a></li>' .
+                  '<li class="edit"><a href="#publish">保存公開</a></li>' .
                   '<li class="edit"><a href="#undo">元に戻す</a></li>' .
                   '<li class="edit"><a href="#history">履歴を表示</a></li>' .
                   '<li class="edit separator"><a href="#menu">メニュー</a></li>' .
                   '<li class="edit"><a href="#logout">ログアウト</a></li>' .
-                  '<li class="edit separator"><b>　ページ全体</b></li>' .
-                  '<li class="edit"><a href="#edit_property">タイトル編集</a></li>' .
-                  '<li class="edit"><a href="#save_page">下書き保存</a></li>' .
-                  '<li class="edit"><a href="#publish_page">下書を公開</a></li>' .
-                  '<li class="edit"><a href="#undo_page">元に戻す</a></li>' .
+//                  '<li class="edit separator"><b>　ページ全体</b></li>' .
+//                  '<li class="edit"><a href="#edit_property">タイトル編集</a></li>' .
+//                  '<li class="edit"><a href="#save_page">下書き保存</a></li>' .
+//                  '<li class="edit"><a href="#publish_page">下書を公開</a></li>' .
+//                  '<li class="edit"><a href="#undo_page">元に戻す</a></li>' .
             '</ul>';
             $node = New Bshe_Dom_Node_Text($strTmp);
             // bodyのnodeクラスを取得
@@ -147,9 +154,22 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             // css
             $strTmp =
                 "<link rel='stylesheet' href='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
-                    "/cms/admin-styles.css' type='text/css' media='screen' />\n"
+                    "/cms/cms.css' type='text/css' media='screen' />\n"
             ;
             $insertNodeClasses[] = New Bshe_Dom_Node_Text($strTmp);
+
+            // 設定関連
+            $strTmp = "<script type=\"text/javascript\">var bshe_basedir='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . "';</script>";
+            $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
+            $encodedTemplateName = urlencode($template->getTemplateFileName());
+            $strTmp = "<script type=\"text/javascript\">var bshe_templatename='" . $encodedTemplateName . "';</script>";
+            $insertNodeClasses[] = New Bshe_Dom_Node_Element($strTmp, 'script');
+
+
+            foreach ($insertNodeClasses as $key => $node) {
+                $template->addChild($node, $headerElement);
+            }
+
 
             // jQuery読み込み
             $arrayPluginFlags = Bshe_View_Plugin_Jquery_Contextmenu_Abstract::setJavascript($arrayPluginFlags);
@@ -157,9 +177,7 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             $arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'][] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/js/cms.js';
 
 
-            foreach ($insertNodeClasses as $key => $node) {
-                $template->addChild($node, $headerElement);
-            }
+
 
 
             // HTML上のスタイル関連タグ取得
@@ -172,6 +190,8 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
 
             // sexylightbox
             $arrayPluginFlags['Bshe_View_Plugin_Sexylightbox']['setLightboxJs'] = true;
+
+
             $template->setParam('pluginFlags', $arrayPluginFlags);
 
             return $template;

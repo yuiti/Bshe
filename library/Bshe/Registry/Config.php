@@ -32,7 +32,7 @@ class Bshe_Registry_Config extends Zend_Registry
      *
      * @var string
      */
-    static protected $bsheInitPath = '';
+    static protected $bsheInitPath = null;
 
     /**
      * INIファイルのフルパスを保存
@@ -95,17 +95,24 @@ class Bshe_Registry_Config extends Zend_Registry
                 }
 
 
-                // コンフィグがセットされているため取得処理
-                if (self::$bsheInitPath != '') {
-                    // コンフィグパスセット済み
-                    $tmpConfig = New $confClassName(self::$bsheInitPath, $index, array('allowModifications' => true));
+                // コンフィグパスがないため設定から取得
+                if (substr($index, 0, 5) != 'Bshe_') {
+                    // アプリケーション独自のINI
+                    $arrayIndex = split('_', $index);
+                    $tmpConfig = New $confClassName(Bshe_Controller_Init::getMainPath() . '/application/' . strtolower($arrayIndex[0]) . '/init/param.ini', $index, array('allowModifications' => true));
                     parent::set('bshe_config_' . $index, $tmpConfig);
                     return $tmpConfig;
                 } else {
-                    // コンフィグパスがないため設定から取得
-                    $tmpConfig = New $confClassName(Bshe_Controller_Init::getMainPath() . '/init/bshe.ini', $index, array('allowModifications' => true));
-                    parent::set('bshe_config_' . $index, $tmpConfig);
-                    return $tmpConfig;
+                    if (self::$bsheInitPath != null) {
+                        // コンフィグパスセット済み
+                        $tmpConfig = New $confClassName(self::$bsheInitPath, $index, array('allowModifications' => true));
+                        parent::set('bshe_config_' . $index, $tmpConfig);
+                        return $tmpConfig;
+                    } else {
+                        $tmpConfig = New $confClassName(Bshe_Controller_Init::getMainPath() . '/init/bshe.ini', $index, array('allowModifications' => true));
+                        parent::set('bshe_config_' . $index, $tmpConfig);
+                        return $tmpConfig;
+                    }
                 }
             }
         } catch (Exception $e) {

@@ -52,6 +52,8 @@ class Bshecms_NoinctextapiController extends Bshe_Specializer_Controller_Action_
             $mainPath = Bshe_Controller_Init::getMainPath();
 
 
+
+
             // リクエストクラスのパラメーター取得
             $arrayRequestParams = $this->getRequest()->getParams();
 
