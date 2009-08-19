@@ -98,7 +98,7 @@ abstract class Bshe_View_Template_Abstract extends Bshe_Abstract
      */
     protected $_logger = null;
 
-
+    
     /**
      * ログクラスをスタティックに登録
      *
@@ -188,6 +188,9 @@ abstract class Bshe_View_Template_Abstract extends Bshe_Abstract
     public function __construct($param = array())
     {
         try {
+            // 設定配列へ追加
+            // loader
+            $this->_params['loader'] = new Bshe_View_Template_Loader_File();
             // パラメーターセット
             $this->setParams($param);
         } catch (Exception $e) {
@@ -219,12 +222,7 @@ abstract class Bshe_View_Template_Abstract extends Bshe_Abstract
         try {
             Bshe_Log::logWithFileAndParamsWrite('テンプレートファイル読込み開始', Zend_Log::DEBUG, array('fileName' => $fileName));
 
-            $file = $this->_params['templatePath'] . '/' . $this->getFileName($fileName);
-
-            // ファイルオープン
-            $fp = fopen($file, 'r');
-            $this->_contents = fread($fp, filesize($file));
-            fclose($fp);
+            $this->_contents = $this->_params['loader']->readTemplateFile(array ('filename' => $this->getFileName($fileName), 'templatePath' => $this->_params['templatePath']));
 
             Bshe_Log::logWithFileAndParamsWrite('テンプレートファイル読込み終了', Zend_Log::DEBUG, array('file' => $file));
 
@@ -252,19 +250,42 @@ abstract class Bshe_View_Template_Abstract extends Bshe_Abstract
                 }
             }
 
-            // ファイルフルパス生成
-            $this->_params['templateFile'] = $fileName;
-            $file = $this->_params['templatePath'] . '/' . $this->_params['templateFile'];
-            if (!file_exists( $file)) {
-                Bshe_Log::logWithFileAndParamsWrite('テンプレートファイルが見つかりません', Zend_Log::ERR, array('file' => $file));
-                throw New Bshe_View_Template_Exception_NoTemplateFile($fileName);
-            }
-
-            return $fileName;
+            return $this->_params['loader']->getFileName($this->_params);
         } catch (Exception $e) {
             throw $e;
         }
     }
+    
+    /**
+     * ローダーによるキャッシュ制御
+     * 
+     * @return unknown_type
+     */
+    public function checkCache()
+    {
+        try {
+            return $this->_params['loader']->checkCache($this->_params);
+            
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    
+    /**
+     * コンパイルキャッシュを保存
+     * 
+     * @return unknown_type
+     */
+    public function saveCompileCache($template)
+    {
+        try {
+            return $this->_params['loader']->saveCompileCache($this->_params, $template);
+            
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    
 
     /**
      * テンプレートファイルのタイムスタンプを確認します。

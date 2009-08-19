@@ -43,7 +43,7 @@ class Bshe_Specializer_Controller_Action_Helper_ViewRenderer_Abstract extends Ze
             return;
         }
 
-        $this->initView($options);
+        $this->initView(null, null, $options);
     }
 
     /**

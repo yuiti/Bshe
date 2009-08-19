@@ -122,7 +122,8 @@ class Bshe_View_Engine extends Bshe_Abstract
     protected $_arraySuffix2Class =
         array(
             'html' => 'Bshe_View_Template_Html',
-            'htm' => 'Bshe_View_Template_Html'
+            'htm' => 'Bshe_View_Template_Html',
+            'proxy' => 'Bshe_View_Template_HtmlProxy'
         );
 
     /**

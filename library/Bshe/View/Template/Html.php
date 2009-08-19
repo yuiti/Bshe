@@ -201,46 +201,21 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
 
 
             // ファイルのコンパイルキャッシュの有無確認
-            if ($this->getParam('templateCompilePath') != null) {
-                $fileDir = dirname($fileName);
-                if (!file_exists($this->_params['templateCompilePath'] . '/' . $fileDir)) {
-                    Bshe_Log::logWithFileAndParamsWrite('コンパイルキャッシュフォルダ作成', Zend_Log::DEBUG, $this->_params['templateCompilePath'] . '/' . $fileDir);
-                    if (!mkdir($this->_params['templateCompilePath'] . '/' . $fileDir, 0777, true)) {
-                        // フォルダ作成失敗
-                        Bshe_Log::logWithFileAndParamsWrite('コンパイルキャッシュフォルダ作成失敗', Zend_Log::ERR, $this->_params['templateCompilePath'] . '/' . $fileDir);
-                        throw New Bshe_View_Exception('コンパイルキャッシュフォルダ作成失敗', Zend_Log::ERR);
-                    }
-                }
-                $frontendOptions = array(
-                    'master_file' => $this->_params['templatePath'] . '/' . $fileName,
-//                    'lifetime' => $this->getParam( 'templateCacheLifeTime'), // キャッシュの有効期限をなしにする
-                    'automatic_serialization' => true,
-                    'ignore_user_abort' => true
-                    );
-                $backendOptions = array(
-                    'cache_dir' => $this->_params['templateCompilePath'] . '/' . $fileDir // キャッシュファイルを書き込むディレクトリ
-                    );
-                $cache = Zend_Cache::factory('File', 'File', $frontendOptions, $backendOptions);
-
-                if ($template = $cache->load(self::getCacheKeyFromFile(basename($fileName)))) {
-                    // キャッシュ読み込み
-                    Bshe_Log::logWithFileAndParamsWrite('コンパイルキャッシュファイル読込み', Zend_Log::DEBUG,
-                        array('fileName' => $fileName));
-//                    $template->_isCached = true;
-                    $template->setParams($this->_params);
-                    return $template;
-                }
+            if (($template = parent::checkCache()) === false) {
+                
+            } else {
+                return $template;
             }
 
             // テンプレートファイル読み込み
             if (!$this->_isCached) {
-                $this->_contents = parent::readTemplateFile($fileName);
+                $this->_contents = parent::readTemplateFile ($fileName);
             }
 
             // DOM解析
             $this->parseTemplate($this->_contents);
             // コンパイルキャッシュ保存
-            $this->saveCompileCache();
+            $this->saveCompileCache($template);
 
             Bshe_Log::logWithFileAndParamsWrite('テンプレートファイル読込み終了', Zend_Log::DEBUG,
                 array('fileName' => $fileName));
@@ -251,44 +226,7 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
         }
     }
 
-    /**
-     * コンパイルキャッシュ機構
-     *
-     */
-    public function saveCompileCache()
-    {
-        try {
-            if ($this->getParam( 'templateCompilePath') != null) {
-                $fileName = $this->getFileName();
-                $fileDir = dirname($fileName);
 
-                // フォルダ生成
-                if (!file_exists($this->_params['templateCompilePath'] . '/' . $fileDir)) {
-                    if (!mkdir( $this->_params['templateCompilePath'] . '/' . $fileDir, 0777, true)) {
-                        // フォルダの作成失敗
-                        Bshe_Log::logWithFileAndParamsWrite('フォルダの作成に失敗しました', Zend_Log::ERR,
-                            array('dir' => $this->_params['templateCompilePath'] . '/' . $fileDir));
-                        throw New Bshe_View_Exception('フォルダの作成に失敗しました。:: ' . $this->_params['templateCompilePath'] . '/' . $fileDir);
-                    }
-                }
-
-                $frontendOptions = array(
-                    'master_file' => $this->_params['templatePath'] . '/' . $fileName,
-                    'automatic_serialization' => true,
-                    'ignore_user_abort' => true
-                    );
-                $backendOptions = array(
-                    'cache_dir' => $this->_params['templateCompilePath'] . '/' . $fileDir // キャッシュファイルを書き込むディレクトリ
-                    );
-                $cache = Zend_Cache::factory('File', 'File', $frontendOptions, $backendOptions);
-
-                $cache->save($this, self::getCacheKeyFromFile(basename($fileName)));
-                Bshe_Log::logWithFileAndParamsWrite('コンパイルキャッシュファイル保存', Zend_Log::DEBUG, array('fileName' => $fileName));
-            }
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
 
 
     /**
