@@ -37,13 +37,27 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
         // デフォルト
     }
     
+    /**
+     * クッキーがある場合は、クッキークラスを返す。
+     * 
+     * @return unknown_type
+     */
+    protected function _getCookieJar()
+    {
+        return null;
+    }
+    
     
     /**
      * Bshe_Specializer用のviewRendererをセットする
+     * html,htm以外の拡張子の場合は、単純にリクエストを取得して
+     * それを出力してしまう。
      *
      */
     public function preDispatch()
     {
+        // HTMLファイルかどうかを判別
+        // HTML file
         $config = Bshe_Registry_Config::getConfig('Bshe_View');
         $mainPath = Bshe_Controller_Init::getMainPath();
 
@@ -64,12 +78,27 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
         }
         $arrayParams['bshe_view_params']['target_request'] = $this->_getTargetRequest();
 
-        $helper->init($arrayParams);
-
+        try {
+            $helper->init($arrayParams);
+        } catch (Bshe_View_Template_Loader_Html_Proxy_Exception_NoHtml $e) {
+            // HTMLではない
+            $response = $e->getResponse();
+            $controllerResponse = new Zend_Controller_Response_Http();
+            $controllerResponse->clearHeaders();
+            $arrayHeaders = $response->getHeaders();
+            foreach ($arrayHeaders as $key  => $header) {
+                $controllerResponse->setHeader($key, $header);
+            }
+            $controllerResponse->setBody($response->getBody());
+            //$this->setResponse($controllerResponse);
+            $controllerResponse->sendResponse();
+            
+            exit(1);
+        }
+            
         Zend_Controller_Action_HelperBroker::addHelper($helper);
 
 
-        //parent::preDispatch();
     }
 
 }

@@ -64,6 +64,13 @@ abstract class Bshe_Dom_Node_Abstract
      * @var unknown_type
      */
     protected $_parent = null;
+    
+    /**
+     * attributeの記載方式
+     * 
+     * @var unknown_type
+     */
+    protected $_attributeType = array();
 
     /**
      * 自身のタグを含んだ文字列を引数にしたコンストラクタ
@@ -212,23 +219,27 @@ abstract class Bshe_Dom_Node_Abstract
 
             // 1つ目はタグ名
             $arrayAttributeStrings = mb_split(' ', trim($strInnerTag));
-            $this->nodeName = $arrayAttributeStrings[0];
+            $this->nodeName = strtolower($arrayAttributeStrings[0]);
             $strInnerTag = trim(mb_substr(trim($strInnerTag), mb_strlen($arrayAttributeStrings[0])));
             // "内の「 」「=」対策
 
             while (mb_strlen($strInnerTag) != 0) {
                 if (preg_match('/^([^\=]+)\s*=\s*\"([^\"]*)\"+/', $strInnerTag, $matches) == 1) {
                     // ""で囲まれたタイプ
-                    $this->_attributes[$matches[1]] = $matches[2];
+                    $this->_attributes[strtolower($matches[1])] = $matches[2];
+                    $this->_attributeType[strtolower($matches[1])] = '"';
                 } elseif (preg_match('/^([^\=]+)\s*=\s*\'([^\']*)\'+/', $strInnerTag, $matches) == 1) {
                     // ''で囲まれたタイプ
-                    $this->_attributes[$matches[1]] = $matches[2];
+                    $this->_attributes[strtolower($matches[1])] = $matches[2];
+                    $this->_attributeType[strtolower($matches[1])] = "'";
                 } elseif (preg_match('/^([^\=]+)\s*=\s*([^\s]*)/', $strInnerTag, $matches) == 1) {
                     // 「 」で区切られたタイプ
-                    $this->_attributes[$matches[1]] = $matches[2];
+                    $this->_attributes[strtolower($matches[1])] = $matches[2];
+                    $this->_attributeType[strtolower($matches[1])] = "";
                 } elseif (preg_match('/^([^\=\s]+)/', $strInnerTag, $matches) == 1) {
                     // =のないタイプ
-                    $this->_attributes[$matches[1]] = null;
+                    $this->_attributes[strtolower($matches[1])] = null;
+                    $this->_attributeType[strtolower($matches[1])] = "";
                 } else {
                     // 認識不能
                     break;
@@ -297,7 +308,7 @@ abstract class Bshe_Dom_Node_Abstract
     public function setAttribute($key, $value)
     {
         try {
-            $this->_attributes[$key] = strval($value);
+            $this->_attributes[strtolower($key)] = strval($value);
         } catch (Exception $e) {
             throw $e;
         }

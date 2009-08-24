@@ -74,10 +74,7 @@ class Bshe_View_Template_Loader_Proxy extends Bshe_View_Template_Loader_Abstract
             $response = $this->_request->request();
 
             return $response->getBody();
-            
-            Bshe_Log::logWithFileAndParamsWrite('テンプレートファイル読込み終了', Zend_Log::DEBUG, array('target_request' => $arrayParams['target_request']));
 
-            return $contents;
         } catch (Exception $e) {
             throw $e;
         }

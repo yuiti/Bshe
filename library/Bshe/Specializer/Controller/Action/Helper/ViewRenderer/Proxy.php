@@ -40,7 +40,7 @@ class Bshe_Specializer_Controller_Action_Helper_ViewRenderer_Proxy extends Bshe_
     {
     	try {
     	    if (!isset($options['bshe_view_params']['loader'])) {
-    	        $options['bshe_view_params']['loader'] = new Bshe_View_Template_Loader_Proxy($options['bshe_view_params']['target_request']);
+    	        $options['bshe_view_params']['loader'] = new Bshe_View_Template_Loader_Html_Proxy($options['bshe_view_params']['target_request']);
     	    }
     	    return parent::initView($path, $prefix, $options);
     	} catch (Exception $e) {

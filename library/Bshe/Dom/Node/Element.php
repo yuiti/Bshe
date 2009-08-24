@@ -78,7 +78,11 @@ class Bshe_Dom_Node_Element extends Bshe_Dom_Node_Abstract
             $strHtml = '<' . $this->nodeName . ' ';
             // 属性生成
             foreach ($this->_attributes as $key => $value) {
-                $strHtml .= $key . '=' . '"' . $value . '" ';
+                if ($value != '') {
+                    $strHtml .= $key . '=' . $this->_attributeType[$key] . $value . $this->_attributeType[$key] . ' ';
+                } else {
+                    $strHtml .= $key . '="" ';
+                }
             }
             $strHtml .= '>';
 

@@ -51,8 +51,7 @@ class Bshe_Dom
             'hr',
             'meta',
             'link',
-            'frame',
-
+            'frame'
         );
 
 
@@ -177,7 +176,7 @@ class Bshe_Dom
                                 throw New Bshe_View_Template_Html_Exception_HtmlParseError('「</」に対応する「>」が見つかりません。', $template, $offset);
                             }
                             // 終了のオフセットを返す
-                            $endName = trim(mb_substr($contents, $offset+2, $endPos -2 - $offset));
+                            $endName = strtolower(trim(mb_substr($contents, $offset+2, $endPos -2 - $offset)));
                             $offset = $offset + $endPos+1 - $offset;
                             return array('nextOffset' => $offset, 'children' => $arrayTree, 'endName' => $endName);
                         default:
@@ -192,13 +191,13 @@ class Bshe_Dom
                             if ( preg_match('/^<[a-zA-Z0-9]*/', $strTmp, $matches) !== 1) {
                                 throw New Bshe_View_Template_Html_Exception_HtmlParseError('タグ名の抽出に失敗しました。:' . mb_substr($strTmp, 0, 10) . '...', $template, $offset);
                             }
-                            $tagName = mb_substr($matches[0], 1);
+                            $tagName = strtolower(mb_substr($matches[0], 1));
 
                             if (array_search(strtolower($tagName), $this->_arrayNoMustFineTag) !== false) {
                                 // 終了タグなしでもOK
                                 // 「>」で終了できるタグで終りが「>」
                                 $nodeValue = mb_substr($contents, $offset, $endPos+1 - $offset);
-                                $tmpNode = New Bshe_Dom_Node_SingleElement($nodeValue, $tagName);
+                                $tmpNode = New Bshe_Dom_Node_SingleElement($nodeValue, strtolower($tagName));
                                 $tmpNode->setParent($parent);
                                 $this->elements[] = $tmpNode;
                                 $arrayTree[]['node'] = count($this->elements)-1;

@@ -33,7 +33,9 @@ class Test_ProxyController extends Bshe_Specializer_Controller_Action_Proxy
     protected function _getTargetRequest()
     {
         try {
-            return new Zend_Http_Client("http://www.sai-graph.com");
+            $orgUri = $_SERVER['REQUEST_URI'];
+            $url = str_replace(Bshe_Controller_Init::getUrlPath() . '/test/proxy', 'http://www.sai-graph.com', $orgUri);
+            return new Zend_Http_Client($url);
         } catch (Exception $e) {
             throw $e;
         }

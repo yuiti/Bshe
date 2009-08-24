@@ -141,13 +141,19 @@ class Bshe_View_Template_Loader_File extends Bshe_View_Template_Loader_Abstract
                 $fileName = $this->getFileName($arrayParams);
                 $fileDir = dirname($fileName);
 
+                if (substr($fileDir, 0, 1) == '/') {
+                    $fileDir = substr($fileDir,1);
+                }
+                 
                 // フォルダ生成
-                if (!file_exists($this->_params['templateCompilePath'] . '/' . $fileDir)) {
+                clearstatcache();
+                if (file_exists($this->_params['templateCompilePath'] . '/' . $fileDir)) {
+                } else {
                     if (!mkdir( $this->_params['templateCompilePath'] . '/' . $fileDir, 0777, true)) {
                         // フォルダの作成失敗
-                        Bshe_Log::logWithFileAndParamsWrite('フォルダの作成に失敗しました', Zend_Log::ERR,
-                            array('dir' => $this->_params['templateCompilePath'] . '/' . $fileDir));
-                        throw New Bshe_View_Exception('フォルダの作成に失敗しました。:: ' . $arrayParams['templateCompilePath'] . '/' . $fileDir);
+                        //Bshe_Log::logWithFileAndParamsWrite('フォルダの作成に失敗しました', Zend_Log::ERR,
+                        //    array('dir' => $this->_params['templateCompilePath'] . '/' . $fileDir));
+                        //throw New Bshe_View_Exception('フォルダの作成に失敗しました。:: ' . $arrayParams['templateCompilePath'] . '/' . $fileDir);
                     }
                 }
 

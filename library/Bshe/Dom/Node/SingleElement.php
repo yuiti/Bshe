@@ -39,7 +39,7 @@ class Bshe_Dom_Node_SingleElement extends Bshe_Dom_Node_Abstract
     {
         try {
             // タグ名
-            $this->nodeName = $tagName;
+            $this->nodeName = strtolower($tagName);
             // 属性抽出
             if ($nodeValue != '') {
                 $this->parseAttribute($nodeValue);
@@ -61,7 +61,11 @@ class Bshe_Dom_Node_SingleElement extends Bshe_Dom_Node_Abstract
             $strHtml = '<' . $this->nodeName . ' ';
             // 属性生成
             foreach ($this->_attributes as $key => $value) {
-                $strHtml .= $key . '=' . '"' . $value . '" ';
+                if ($value != '') {
+                    $strHtml .= $key . '=' . $this->_attributeType[$key] . $value . $this->_attributeType[$key] . ' ';
+                } else {
+                    $strHtml .= $key . '="" ';
+                }
             }
             // nodeValueの有無確認
             if ($this->_nodeValue ==  '') {

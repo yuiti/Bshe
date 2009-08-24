@@ -61,6 +61,14 @@ class Bshe_Specializer_Controller_Plugin_Accesslog extends Zend_Controller_Plugi
     {
         try {
             $pathInfo = $request->getPathInfo();
+            $this->logger->logWithFileAndParams($message, Zend_Log::DEBUG,
+                array(
+                	'pathinfo' => $pathInfo,
+                    'module' => $request->getModuleName(),
+                    'controller' => $request->getControllerName(),
+                    'action' => $request->getActionName()
+                )
+            );
             $this->logger->logWithFileAndParams($message, Zend_Log::INFO, array('pathinfo' => $pathInfo));
 
         } catch (Exception $e) {

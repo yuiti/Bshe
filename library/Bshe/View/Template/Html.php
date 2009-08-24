@@ -132,7 +132,7 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
              // デフォルトクラスを利用しないタグの配列
              $this->_params['noDefaultTags'] = array(
                  'input' => 'Bshe_View_Template_Html_Tags_Input',
-                 'select' => 'Bshe_View_Template_Html_Tags_Select',
+                 'select' => 'Bshe_View_Template_Html_Tags_Select'
                 );
              // テーブル扱いクラス
              $this->_params['tableClass'] =
@@ -215,7 +215,7 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
             // DOM解析
             $this->parseTemplate($this->_contents);
             // コンパイルキャッシュ保存
-            $this->saveCompileCache($template);
+            $this->saveCompileCache($this);
 
             Bshe_Log::logWithFileAndParamsWrite('テンプレートファイル読込み終了', Zend_Log::DEBUG,
                 array('fileName' => $fileName));
@@ -683,10 +683,10 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
             // 文字列変換
             $strHTML = mb_convert_encoding($strHTML, $this->_encoding);
             foreach ($this->_metaTags as $element => $val) {
-                if ($val == 'content-type') {
+                if (strtolower($val) == 'content-type') {
                     if ($this->_xml->elements[$element]->hasAttribute('content')) {
                         // コンテントタイプ出力
-                        header('Content-Type: ' . $this->_xml->elements[$element]->getAttribute('content'));
+                        header('Content-Type: ' . $this->_xml->elements[$element]->getAttribute('content'), true);
                     }
                 }
             }
@@ -1117,6 +1117,39 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
         }
     }
 
+    /**
+     * タグ名からElementを取得
+     * 同じタグが複数ある場合は最初に見つかったタグを返す
+     *
+     * @param $tagName
+     * @return unknown_type
+     */
+    public function getElementByElementId($targetElementId)
+    {
+        try {
+            $elements = $this->getElementNumbers();
+            $targetElement = null;
+            foreach ($elements as $key => $element) {
+                $elementId = $element->getAttribute('id');
+                if (strtolower($elementId) == strtolower($targetElementId)) {
+                    // header発見
+                    $targetElement = $key;
+                    break;
+                }
+            }
+            if ($targetElement === null) {
+                // headerが見つからない
+                $this->getLogger()->logWithFileAndParams($targetElementId . 'タグが見つかりません。', Zend_Log::INFO);
+                return false;
+            } else {
+                return $targetElement;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    
+    
     /**
      * タグ名からElementを取得
      * 同じタグが複数ある場合は最初に見つかったタグを返す
