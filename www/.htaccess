@@ -9,7 +9,8 @@ RewriteRule ^(.+)$ $1/index.html [N]
 #RewriteRule ^/$ _bshe/index.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^_bshetemplate(.*)(\.gif|\.jpg|\.png|\.php|\.css|\.js|\.ico)$ - [L]
+RewriteRule ^_bshetemplate(.*)$ _bshe/index.php [L]
+#RewriteRule ^_bshetemplate(.*)(\.gif|\.jpg|\.png|\.php|\.css|\.js|\.ico)$ - [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !-f
