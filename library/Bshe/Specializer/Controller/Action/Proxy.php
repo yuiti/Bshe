@@ -28,6 +28,17 @@ require_once 'Bshe/Specializer/Controller/Action/Default.php';
 class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controller_Action_Default
 {
     /**
+     * 直接proxyする拡張子（大文字小文字区別なし）
+     * 
+     * @var unknown_type
+     */
+    protected $_nonProxySuffix = array(
+        '.jpg',
+        '.gif',
+        '.pdf'
+    );
+    
+    /**
      * リクエストから、元HTMLを取得するrequestを生成返す。
      * 
      * @return unknown_type
@@ -47,6 +58,17 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
         return null;
     }
     
+    /**
+     *  独自のloaderをセットする場合は
+     *  ローダークラスのインスタンスを返す。
+     * 
+     * @return unknown_type
+     */
+    protected function _getLoader($arrayParams)
+    {
+        return null;
+    }
+    
     
     /**
      * Bshe_Specializer用のviewRendererをセットする
@@ -56,49 +78,73 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
      */
     public function preDispatch()
     {
-        // HTMLファイルかどうかを判別
-        // HTML file
-        $config = Bshe_Registry_Config::getConfig('Bshe_View');
-        $mainPath = Bshe_Controller_Init::getMainPath();
-
-        if (Zend_Controller_Action_HelperBroker::hasHelper('viewRenderer')) {
-            Zend_Controller_Action_HelperBroker::removeHelper('viewRenderer');
-        }
-
-        $helper = New Bshe_Specializer_Controller_Action_Helper_ViewRenderer_Proxy();
-
-        $helper->setActionController($this);
-        $viewPath = $mainPath . 'application/' . $this->getRequest()->getModuleName() . '/views';
-        $arrayParams = array();
-        if (file_exists($viewPath . '/resource')) {
-            $arrayParams['bshe_view_params']['assignClassPath'][] = $viewPath . '/resource';
-        }
-        if (file_exists($viewPath . '/helper')) {
-            $arrayParams['bshe_view_params']['helperClassPath'][] = $viewPath . '/helper';
-        }
-        $arrayParams['bshe_view_params']['target_request'] = $this->_getTargetRequest();
-
-        try {
-            $helper->init($arrayParams);
-        } catch (Bshe_View_Template_Loader_Html_Proxy_Exception_NoHtml $e) {
-            // HTMLではない
-            $response = $e->getResponse();
-            $controllerResponse = new Zend_Controller_Response_Http();
-            $controllerResponse->clearHeaders();
-            $arrayHeaders = $response->getHeaders();
-            foreach ($arrayHeaders as $key  => $header) {
-                $controllerResponse->setHeader($key, $header);
+        // 一部拡張子で判別してViewを利用せずにproxyする。
+        if (array_search(substr($_SERVER['REQUESST_URI'], -3), $this->_nonProxySuffix) === false) {
+            
+            // HTML file
+            $config = Bshe_Registry_Config::getConfig('Bshe_View');
+            $mainPath = Bshe_Controller_Init::getMainPath();
+    
+            if (Zend_Controller_Action_HelperBroker::hasHelper('viewRenderer')) {
+                Zend_Controller_Action_HelperBroker::removeHelper('viewRenderer');
             }
-            $controllerResponse->setBody($response->getBody());
-            //$this->setResponse($controllerResponse);
-            $controllerResponse->sendResponse();
+    
+            $helper = New Bshe_Specializer_Controller_Action_Helper_ViewRenderer_Proxy();
+    
+            $helper->setActionController($this);
+            $viewPath = $mainPath . 'application/' . $this->getRequest()->getModuleName() . '/views';
+            $arrayParams = array();
+            if (file_exists($viewPath . '/resource')) {
+                $arrayParams['bshe_view_params']['assignClassPath'][] = $viewPath . '/resource';
+            }
+            if (file_exists($viewPath . '/helper')) {
+                $arrayParams['bshe_view_params']['helperClassPath'][] = $viewPath . '/helper';
+            }
+            $arrayParams['bshe_view_params']['target_request'] = $this->_getTargetRequest();
+    
+            // loaderセットの有無
+            if (($loader = $this->_getLoader($arrayParams)) !== null) {
+                $arrayParams['bshe_view_params']['loader'] = $loader;
+            }
             
-            exit(1);
+            try {
+                $helper->init($arrayParams);
+            } catch (Bshe_View_Template_Loader_Html_Proxy_Exception_NoHtml $e) {
+                // HTMLではない
+                $response = $e->getResponse();
+                $this->_directProxy($response);
+            }
+                
+            Zend_Controller_Action_HelperBroker::addHelper($helper);
+        } else {
+            $request = $this->_getTargetRequest();
         }
-            
-        Zend_Controller_Action_HelperBroker::addHelper($helper);
-
 
     }
+    
+    /**
+     * Viewを利用せずに直接Proxyする
+     * 
+     * @return unknown_type
+     */
+    protected function _directProxy($response)
+    {
+        try {
+                $controllerResponse = new Zend_Controller_Response_Http();
+                $controllerResponse->clearHeaders();
+                $arrayHeaders = $response->getHeaders();
+                foreach ($arrayHeaders as $key  => $header) {
+                    $controllerResponse->setHeader($key, $header);
+                }
+                $controllerResponse->setBody($response->getBody());
+                $controllerResponse->sendResponse();
+                
+                exit(1);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+    
+    
 
 }
