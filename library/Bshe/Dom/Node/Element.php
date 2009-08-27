@@ -78,7 +78,9 @@ class Bshe_Dom_Node_Element extends Bshe_Dom_Node_Abstract
             $strHtml = '<' . $this->nodeName . ' ';
             // 属性生成
             foreach ($this->_attributes as $key => $value) {
-                if ($value != '') {
+                if ($key == 'innerhtml') {
+                    
+                } elseif ($value != '') {
                     $strHtml .= $key . '=' . $this->_attributeType[$key] . $value . $this->_attributeType[$key] . ' ';
                 } else {
                     $strHtml .= $key . '="" ';

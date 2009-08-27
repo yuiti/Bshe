@@ -49,6 +49,7 @@ class Bshe_View_Template_Loader_Html_Proxy extends Bshe_View_Template_Loader_Pro
                 $this->_request = $arrayParams['target_request'];
             }
             $response = $this->_request->request();
+            //Bshe_Log::logWithFileAndParamsWrite('読み込まれたリクエスト', Zend_Log::DEBUG, array('target_request' => $arrayParams['target_request']));
             
             // content-typeがtext/htmlでない場合は例外とする
             if (strpos($response->getHeader('Content-Type'), 'text/html') === false)

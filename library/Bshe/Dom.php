@@ -428,7 +428,7 @@ class Bshe_Dom
                         $domTree[$i] = $domTree[$i+1];
                     }
                     // 最後のノードの削除
-                    $deletedElements[] = $targetNodeNumber;
+                    $this->deletedElements[] = $targetNodeNumber;
                     unset ($domTree[count($domTree)-1]);
                     $domTree['fine'] = true;
                     return $domTree;
