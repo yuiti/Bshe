@@ -137,6 +137,27 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             // bodyのnodeクラスを取得
             $template->addChild($node, $bodyElement);
 
+            // imgメニューHTMLを生成
+            $strTmp =
+                '<ul id="bshe_cmsimg_menu" class="contextMenu">' .
+                  '<li class="edit"><b>　このブロック</b></li>' .
+                  '<li class="edit"><a href="#editer">画像変更</a></li>' .
+                  '<li class="edit"><a href="#save">下書き保存</a></li>' .
+                  '<li class="edit"><a href="#publish">保存公開</a></li>' .
+                  '<li class="edit"><a href="#undo">元に戻す</a></li>' .
+                  '<li class="edit"><a href="#history">履歴を表示</a></li>' .
+                  '<li class="edit separator"><a href="#menu">メニュー</a></li>' .
+                  '<li class="edit"><a href="#logout">ログアウト</a></li>' .
+//                  '<li class="edit separator"><b>　ページ全体</b></li>' .
+//                  '<li class="edit"><a href="#edit_property">タイトル編集</a></li>' .
+//                  '<li class="edit"><a href="#save_page">下書き保存</a></li>' .
+//                  '<li class="edit"><a href="#publish_page">下書を公開</a></li>' .
+//                  '<li class="edit"><a href="#undo_page">元に戻す</a></li>' .
+            '</ul>';
+            $node = New Bshe_Dom_Node_Text($strTmp);
+            // bodyのnodeクラスを取得
+            $template->addChild($node, $bodyElement);
+            
             $strTmp =
                 '<ul id="bshe_cms_pagemenu" class="contextMenu">' .
                   '<li class="edit"><b>　ページ全体</b></li>' .

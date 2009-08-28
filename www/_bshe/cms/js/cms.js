@@ -4,12 +4,12 @@ jQuery(document).ready( function() {
 		test: 'aaa'
 		}
 	);
-
-//	jQuery(".bshe_cms_img").bsheCms({
-//		test: 'aaa'
-//		}
-//	);
-
+	
+/*	jQuery(".bshe_cms_img").bsheCmsImg({
+		test: 'aaa'
+		}
+	);
+*/
 	jQuery(".bshe_cms_menu").contextMenu({
 			menu: 'bshe_cms_menu'
 		},

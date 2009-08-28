@@ -308,7 +308,10 @@ abstract class Bshe_Dom_Node_Abstract
     public function setAttribute($key, $value)
     {
         try {
-            $this->_attributes[strtolower($key)] = strval($value);
+            $this->_attributes[strtolower($key)] = mb_eregi_replace('"', '\"', $value);
+            if (!isset($this->_attributeType[strtolower($key)]) or ($this->_attributeType[strtolower($key)]== '')) {
+                $this->_attributeType[strtolower($key)] = '"';
+            }
         } catch (Exception $e) {
             throw $e;
         }
