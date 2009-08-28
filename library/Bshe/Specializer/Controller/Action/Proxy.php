@@ -79,7 +79,7 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
     public function preDispatch()
     {
         // 一部拡張子で判別してViewを利用せずにproxyする。
-        if (array_search(substr($_SERVER['REQUESST_URI'], -3), $this->_nonProxySuffix) === false) {
+        if (array_search(substr($this->getRequest()->getPathInfo(), -3), $this->_nonProxySuffix) === false) {
             
             // HTML file
             $config = Bshe_Registry_Config::getConfig('Bshe_View');
