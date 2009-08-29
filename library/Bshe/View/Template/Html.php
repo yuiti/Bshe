@@ -1124,13 +1124,13 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
      * @param $tagName
      * @return unknown_type
      */
-    public function getElementByElementId($targetElementId)
+    public function getElementByElementId($targetElementId, $targetAttribute = 'id')
     {
         try {
             $elements = $this->getElementNumbers();
             $targetElement = null;
             foreach ($elements as $key => $element) {
-                $elementId = $element->getAttribute('id');
+                $elementId = $element->getAttribute($targetAttribute);
                 if (strtolower($elementId) == strtolower($targetElementId)) {
                     // header発見
                     $targetElement = $key;
