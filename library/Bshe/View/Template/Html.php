@@ -433,7 +433,11 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
 
             // XML読み込み
             $this->_encoding = mb_detect_encoding($contents, 'ASCII, JIS, UTF-8, EUC-JP, SJIS-win, SJIS');
-            $contents = mb_convert_encoding($contents, ini_get('mbstring.internal_encoding'), $this->_encoding);
+            if ($this->_encoding == 'EUC-JP') {
+                $contents = mb_convert_encoding($contents, ini_get('mbstring.internal_encoding'), 'eucJP-win');
+            } else {
+                $contents = mb_convert_encoding($contents, ini_get('mbstring.internal_encoding'), $this->_encoding);
+            }
             $this->_xml = New Bshe_Dom($contents, $this);
 
             $this->parseHtml();
@@ -681,7 +685,11 @@ class Bshe_View_Template_Html extends Bshe_View_Template_Abstract
             }
 
             // 文字列変換
-            $strHTML = mb_convert_encoding($strHTML, $this->_encoding);
+            if (strtolower($this->_encoding) == 'euc-jp') {
+                $strHTML = mb_convert_encoding($strHTML, 'eucJP-win', ini_get('mbstring.internal_encoding'));
+            } else {
+                $strHTML = mb_convert_encoding($strHTML, $this->_encoding, ini_get('mbstring.internal_encoding'));
+            }
             foreach ($this->_metaTags as $element => $val) {
                 if (strtolower($val) == 'content-type') {
                     if ($this->_xml->elements[$element]->hasAttribute('content')) {
