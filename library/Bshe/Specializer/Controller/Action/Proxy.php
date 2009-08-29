@@ -130,13 +130,17 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
     protected function _directProxy($response)
     {
         try {
-                $controllerResponse = new Zend_Controller_Response_Http();
-                $controllerResponse->clearHeaders();
-                $arrayHeaders = $response->getHeaders();
-                foreach ($arrayHeaders as $key  => $header) {
-                    $controllerResponse->setHeader($key, $header);
+                if (is_a($response, 'Zend_Controller_Response_Http')) {
+                    $controllerResponse = $response;
+                } else {
+                    $controllerResponse = new Zend_Controller_Response_Http();
+                    $controllerResponse->clearHeaders();
+                    $arrayHeaders = $response->getHeaders();
+                    foreach ($arrayHeaders as $key  => $header) {
+                        $controllerResponse->setHeader($key, $header);
+                    }
+                    $controllerResponse->setBody($response->getBody());
                 }
-                $controllerResponse->setBody($response->getBody());
                 $controllerResponse->sendResponse();
                 
                 exit(1);
