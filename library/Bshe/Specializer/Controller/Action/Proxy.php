@@ -119,6 +119,11 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
         } else {
             $request = $this->_getTargetRequest();
         }
+        
+        // 後処理
+        if (method_exists($this, '_afterProxy')) {
+            $this->_afterProxy();
+        }
 
     }
     
@@ -139,9 +144,14 @@ class Bshe_Specializer_Controller_Action_Proxy extends Bshe_Specializer_Controll
                     foreach ($arrayHeaders as $key  => $header) {
                         $controllerResponse->setHeader($key, $header);
                     }
-                    $controllerResponse->setBody($response->getBody());
+                    $controllerResponse->setBody($response->getRawBody());
                 }
                 $controllerResponse->sendResponse();
+                
+                // 後処理
+                if (method_exists($this, '_afterProxy')) {
+                    $this->_afterProxy();
+                }
                 
                 exit(1);
         } catch (Exception $e) {
