@@ -1,5 +1,3 @@
-php_flag mbstring.encoding_translation off
-
 RewriteEngine on
 RewriteBase /
 
