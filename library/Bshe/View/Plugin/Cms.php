@@ -61,6 +61,15 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             array(
                 'Bshe_Specializer_Xajax_Cms_Text', 'undoText'
             );
+            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+            array(
+                'Bshe_Specializer_Xajax_Cms_Image', 'publishImage'
+            );
+            $arrayPluginFlags['Bshe_View_Plugin_Xajax']['setXajaxRegist'][] =
+            array(
+                'Bshe_Specializer_Xajax_Cms_Image', 'undoImage'
+            );
+            
             $template->setParam('pluginFlags', $arrayPluginFlags);
 
             return $template;
@@ -142,10 +151,8 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
                 '<ul id="bshe_cmsimg_menu" class="contextMenu">' .
                   '<li class="edit"><b>　このブロック</b></li>' .
                   '<li class="edit"><a href="#editer">画像変更</a></li>' .
-                  '<li class="edit"><a href="#save">下書き保存</a></li>' .
                   '<li class="edit"><a href="#publish">保存公開</a></li>' .
-                  '<li class="edit"><a href="#undo">元に戻す</a></li>' .
-                  '<li class="edit"><a href="#history">履歴を表示</a></li>' .
+//                  '<li class="edit"><a href="#undo">元に戻す</a></li>' .
                   '<li class="edit separator"><a href="#menu">メニュー</a></li>' .
                   '<li class="edit"><a href="#logout">ログアウト</a></li>' .
 //                  '<li class="edit separator"><b>　ページ全体</b></li>' .
@@ -172,6 +179,7 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             // bodyのnodeクラスを取得
             $template->addChild($node, $bodyElement);
 
+            
             // css
             $strTmp =
                 "<link rel='stylesheet' href='" . Bshe_Controller_Init::getUrlPath() . $config->indexphp_path .
@@ -195,6 +203,7 @@ class Bshe_View_Plugin_Cms extends Bshe_View_Plugin_Abstract
             // jQuery読み込み
             $arrayPluginFlags = Bshe_View_Plugin_Jquery_Contextmenu_Abstract::setJavascript($arrayPluginFlags);
             $arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'][] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/jquery/plugins/bshecms/jquery.bshecms.js';
+            $arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'][] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/jquery/plugins/bshecms/jquery.bshecmsimg.js';
             $arrayPluginFlags['Bshe_View_Plugin_Jquery']['setJqueryPlugin'][] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/js/cms.js';
 
 

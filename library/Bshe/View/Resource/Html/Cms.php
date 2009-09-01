@@ -291,9 +291,18 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             // 親ノードをたどって、aタグがないかを確認
             $parentA = $arrayParams['templateClass']->searchParentTag($arrayParams['element'], 'a');
 
-            // キャッシュクラスインスタンス化
-            $cache = New Bshe_Specializer_Cms_Cache_Image($id, $arrayParams['element'], $parentA, $arrayParams['templateClass']);
-            $contentsArray = $cache->getContents();
+            if (Bshe_Specializer_Auth_Cms::isLogined()) {
+                
+                // キャッシュクラスインスタンス化
+                $cache = New Bshe_Specializer_Cms_Cache_Image($id, $arrayParams['element'], $parentA, $arrayParams['templateClass'], null, true);
+                $contentsArray = $cache->getContents();
+            } else {
+                
+                // キャッシュクラスインスタンス化
+                $cache = New Bshe_Specializer_Cms_Cache_Image($id, $arrayParams['element'], $parentA, $arrayParams['templateClass']);
+                $contentsArray = $cache->getContents();
+
+            }
 
             // 出力
 
@@ -436,7 +445,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                         'document.getElementById("imageSave").value = "Uploading...";' .
                         'document.getElementById("imageHref").value = document.getElementById("imageHref").value.replace(/[\,\'\"]/g, "");' .
                         'document.getElementById("imageTitle").value = document.getElementById("imageTitle").value.replace(/[\,\'\"]/g, "");' .
-                        'window.parent.LTSun.showLoadingWindow({animationSpeed:800});' .
+//                        'window.parent.LTSun.showLoadingWindow({animationSpeed:800});' .
                         'return true;' .
                     '}' .
                     'else' .
@@ -445,7 +454,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                         'document.getElementById("imageSave").value = "Uploading...";' .
                         'document.getElementById("imageHref").value = document.getElementById("imageHref").value.replace(/[\,\'\"]/g, "");' .
                         'document.getElementById("imageTitle").value = document.getElementById("imageTitle").value.replace(/[\,\'\"]/g, "");' .
-                        'window.parent.LTSun.showLoadingWindow({animationSpeed:800});' .
+//                        'window.parent.LTSun.showLoadingWindow({animationSpeed:800});' .
                         'return true;' .
                     '}' .
                 '}' .
@@ -786,7 +795,7 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
             $config = Bshe_Registry_Config::getConfig('Bshe_Specializer');
 
             // キャッシュクラスインスタンス化
-            $cache = New Bshe_Specializer_Cms_Cache_Image($_REQUEST['elementId'], null, null, $arrayParams['templateClass'], $_REQUEST['pageId']);
+            $cache = New Bshe_Specializer_Cms_Cache_Image($_REQUEST['elementId'], null, null, $arrayParams['templateClass'], $_REQUEST['pageId'], true);
 
             if ($cache->saveImageFromRequest() === false) {
                 // ファイル未選択
@@ -815,7 +824,8 @@ class Bshe_View_Resource_Html_Cms extends Bshe_View_Resource_Html_Abstract
                     "<center><span style=\"font-size:26px;\">アップロード成功</span></center>" .
                     "</td></tr></table>" .
                     "<script type=\"text/javascript\" language=\"javascript\">" .
-                        "window.parent.LTSun.updateImage(\"" . $_REQUEST['elementId'] . "\",\"". $arrayContents['src'] ."\", \"".$arrayContents['href']."\", \"".$arrayContents['alt']."\",\"" . $arrayContents['ymd'] . "\");" .
+                        "el = window.parent.document.getElementById('" . $_REQUEST['elementId'] . "');" .
+                        "el.updateImage(\"". $arrayContents['src'] ."\",\"".$arrayContents['alt']."\");" .
                         "if(navigator.userAgent.indexOf('sfari') != -1) window.location.reload(false);" .
                     "</script>";
                 $arrayAssign[] =

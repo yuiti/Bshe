@@ -11,19 +11,8 @@
 			color: #333333;
 		}
 	</style>
-	<script type="text/javascript" language="javascript">
-		function bshe_checkupdate() {
-			if(window.parent.LTSun.isUpdatedImage(document.getElementById('elementId').value)) {
-				document.getElementById('bshe_noinctbl').style.display = 'none';
-				document.getElementById('imagePublish').style.visibility = "visible";
-				document.getElementById('imageRevert').style.visibility = "visible";
-				document.getElementById('imageSave').style.visibility = "hidden";
-				document.getElementById('bshe_msg').style.display = "block";
-			}
-		}
-	</script>
 </head>
-<body style="background-color:transparent;margin:0px;padding:0px;" onload="javascript:bshe_checkupdate();">
+<body style="background-color:transparent;margin:0px;padding:0px;">
 
 	<form key="bshe::cms:imguploaderform" action="noinc-render.html" enctype="multipart/form-data" method="post" onSubmit="return validateUpload();">
 		<div>
@@ -41,15 +30,14 @@
 					<tr><td colspan="3" style="line-height:4px;font-size:3px;height:6px;">&nbsp;</td></tr>
 					<tr><td align="right">Title:</td><td>&nbsp;&nbsp;</td><td><input key="bshe::cms:imguploadertitle" name="imageTitle" id="imageTitle" type="text" style="width:220px;" value="" /></td></tr>
 				</table>
-				<span id="bshe_msg" style="display: none;">現在の画像を公開しますか？<br />戻しますか？</span>
 
 				<br />
 
 				<center>
-					<input name="imageSave" id="imageSave" type="submit" value="保存" style="width:140px;" />&nbsp;&nbsp;
-					<!--  <input name="imageSave" id="imageSave" type="button" value="Envoke Live Click" style="width:140px;" onClick="window.parent.LTSun.envokeLiveClick('<?php echo $_GET['elementId']; ?>');" /> -->
+					<input name="imageSave" id="imageSave" type="submit" value="下書保存" style="width:140px;" />&nbsp;&nbsp;
+					<!--  <input name="imageSave" id="imageSave" type="button" value="Envoke Live Click" style="width:140px;" onClick="window.parent.LTSun.envokeLiveClick('<?php echo $_GET['elementId']; ?>');" /> 
 					<input style="visibility:hidden;" name="imagePublish" id="imagePublish" type="button" value="公開" onClick="publishImage();" />
-					<input style="visibility:hidden;" name="imageRevert" id="imageRevert" type="button" value="戻す" onClick="window.parent.LTSun.revertImage(document.getElementById('elementId').value);" />
+					<input style="visibility:hidden;" name="imageRevert" id="imageRevert" type="button" value="戻す" onClick="window.parent.LTSun.revertImage(document.getElementById('elementId').value);" /> -->
 				</center>
 			</div>
 		</div>

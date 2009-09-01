@@ -43,7 +43,7 @@ class Bshe_Specializer_Cms_Cache_Image extends Bshe_Specializer_Cms_Cache_Abstra
      * @param $template
      * @return unknown_type
      */
-    public function __construct($id, $elementId = null, $parentElementId = null, $template, $templateFilename = null)
+    public function __construct($id, $elementId = null, $parentElementId = null, $template, $templateFilename = null, $forEdit = false)
     {
         try {
             $cachePath = self::getCachePath($template, $templateFilename);
@@ -69,7 +69,15 @@ class Bshe_Specializer_Cms_Cache_Image extends Bshe_Specializer_Cms_Cache_Abstra
                 $this->_saveCmsCache($this->_cachePath . '/published.array', serialize($this->_imgValues));
                 $this->_saveCmsCache($this->_cachePath . '/default.array', serialize($this->_imgValues));
             } else {
-                $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/published.array'));
+                if ($forEdit) {
+                    if (!file_exists($this->_cachePath . '/preview.array')) {
+                        $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/published.array'));
+                    } else {
+                        $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/preview.array'));
+                    }
+                } else {
+                    $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/published.array'));
+                }
             }
 
         } catch (Exception $e) {
@@ -92,11 +100,11 @@ class Bshe_Specializer_Cms_Cache_Image extends Bshe_Specializer_Cms_Cache_Abstra
 
                 // 拡張子
                 $imageType = substr($_FILES["imageFile"]["name"], strrpos($_FILES["imageFile"]["name"], ".")+1, 3);
-                $ymd = date('Y-m-d-H-i-s');
+                $ymd = 'preview';
 
                 if(move_uploaded_file($_FILES["imageFile"]["tmp_name"], $this->_cachePath . "/" . $ymd . '.' . $imageType)){
                     // ファイルを移動
-                    $this->_imgValues["src"] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/image/images' . $this->_cachePathRelative . '/' . date('Y-m-d-H-i-s') . '.' . $imageType;
+                    $this->_imgValues["src"] = Bshe_Controller_Init::getUrlPath() . $config->indexphp_path . '/cms/image/images' . $this->_cachePathRelative . '/preview.' . $imageType;
                     if (isset($this->_imgValues['href'])) {
                         $this->_imgValues['href'] = $_REQUEST['imageHref'];
                     }
@@ -114,7 +122,7 @@ class Bshe_Specializer_Cms_Cache_Image extends Bshe_Specializer_Cms_Cache_Abstra
                     throw New Bshe_Specializer_Cms_Cache_Exception('リクエストファイル移動失敗');
                 }
             } else {
-                $ymd = date('Y-m-d-H-i-s');
+                $ymd = 'preview';
                 // リクエストにファイルなし、リンクなどのみ修正
                if (isset($this->_imgValues['href'])) {
                     $this->_imgValues['href'] = $_REQUEST['imageHref'];
@@ -138,11 +146,43 @@ class Bshe_Specializer_Cms_Cache_Image extends Bshe_Specializer_Cms_Cache_Abstra
      * @param $ymd
      * @return unknown_type
      */
-    public function publishContents($ymd)
+    public function publishContents()
     {
         try {
-            $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/' . $ymd . '.array'));
+            $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/preview.array'));
+            $imageType = substr($this->_imgValues['src'], strrpos($this->_imgValues['src'], ".")+1, 3);
+            copy($this->_cachePath . '/preview.' . $imageType, $this->_cachePath . '/published.' . $imageType);
+            $this->_imgValues['src'] = str_replace('preview', 'published', $this->_imgValues['src']);
             $this->_saveCmsCache($this->_cachePath . '/published.array', serialize($this->_imgValues));
+            $ymd = date('Y-m-d-H-i-s');
+            copy($this->_cachePath . '/preview.' . $imageType, $this->_cachePath . '/' . $ymd . '/.' . $imageType);
+            $this->_imgValues['src'] = str_replace('published', $ymd, $this->_imgValues['src']);
+            $this->_saveCmsCache($this->_cachePath . '/' . $ymd . '.array', serialize($this->_imgValues));
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+    }
+    
+    
+    /**
+     * 画像を公開
+     *
+     * @param $ymd
+     * @return unknown_type
+     */
+    public function undoContents()
+    {
+        try {
+            $this->_imgValues = unserialize($this->_loadCmsCache($this->_cachePath . '/preview.array'));
+            $imageType = substr($this->_imgValues['src'], strrpos($this->_imgValues['src'], ".")+1, 3);
+            copy($this->_cachePath . '/preview.' . $imageType, $this->_cachePath . '/published.' . $imageType);
+            $this->_imgValues['src'] = str_replace('preview', 'published', $this->_imgValues['src']);
+            $this->_saveCmsCache($this->_cachePath . '/published.array', serialize($this->_imgValues));
+            $ymd = date('Y-m-d-H-i-s');
+            copy($this->_cachePath . '/preview.' . $imageType, $this->_cachePath . '/' . $ymd . '/.' . $imageType);
+            $this->_imgValues['src'] = str_replace('published', $ymd, $this->_imgValues['src']);
+            $this->_saveCmsCache($this->_cachePath . '/' . $ymd . '.array', serialize($this->_imgValues));
         } catch (Exception $e) {
             throw $e;
         }
